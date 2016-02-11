@@ -52,7 +52,7 @@ Vagrant.configure("2") do |config|
   # This box is provided by Ubuntu vagrantcloud.com and is a nicely sized (332MB)
   # box containing the Ubuntu 14.04 Trusty 64 bit release. Once this box is downloaded
   # to your host computer, it is cached for future use under the specified box name.
-  config.vm.box = "ubuntu/trusty64"
+  config.vm.box = "ubuntu/trusty32"
 
   # The Parallels Provider uses a different naming scheme.
   config.vm.provider :parallels do |v, override|
@@ -61,17 +61,17 @@ Vagrant.configure("2") do |config|
 
   # The VMware Fusion Provider uses a different naming scheme.
   config.vm.provider :vmware_fusion do |v, override|
-    override.vm.box = "netsensia/ubuntu-trusty64"
+    override.vm.box = "netsensia/ubuntu-trusty32"
   end
 
   # VMWare Workstation can use the same package as Fusion
   config.vm.provider :vmware_workstation do |v, override|
-    override.vm.box = "netsensia/ubuntu-trusty64"
+    override.vm.box = "netsensia/ubuntu-trusty32"
   end
 
   # Hyper-V uses a different base box.
   config.vm.provider :hyperv do |v, override|
-    override.vm.box = "ericmann/trusty64"
+    override.vm.box = "ericmann/trusty32"
   end
 
   config.vm.hostname = "vvv"

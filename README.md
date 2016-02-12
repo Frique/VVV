@@ -13,10 +13,10 @@ A fork of https://github.com/Varying-Vagrant-Vagrants/VVV for personal use.
 - Switch to trusty32 for lighter performance
 - Skip WordPress SVN checkouts + updates
 - Remove WP related hosts (start with only vvv.dev for the dashboard)
-- Strip all vagrant pre-1.3 code
+- Strip vagrant version pre-1.3 code
+- Skip apt-get update
 
 ### Todo
-- Set DB passwords to admin/admin
 - Avoid checking if the ubuntu box is up to date
 - Automatically create a database for an .sql dump if it doesn't exist (import-sql.sh)
 - Drop a database & import the .sql is it already exists (gives the ability to overwrite with new dump)

@@ -15,6 +15,8 @@ A fork of https://github.com/Varying-Vagrant-Vagrants/VVV for personal use.
 - Remove WP related hosts (start with only vvv.dev for the dashboard)
 - Strip vagrant version pre-1.3 code
 - Skip apt-get update
+- Skip subversion (svn) installation
+- Enable SSL certificate for all .dev domains
 
 ### Todo
 - Avoid checking if the ubuntu box is up to date

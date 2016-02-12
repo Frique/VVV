@@ -313,7 +313,7 @@ nginx_setup() {
             -key /etc/nginx/server.key \
             -out /etc/nginx/server.crt \
             -days 3650 \
-            -subj /CN=*.vvv.dev 2>&1)"
+            -subj /CN=*.*.dev 2>&1)"
 	  echo "$vvvsigncert"
   fi
 

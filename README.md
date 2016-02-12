@@ -11,10 +11,10 @@ A fork of https://github.com/Varying-Vagrant-Vagrants/VVV for personal use.
 
 ### Applied features
 - Switch to trusty32 for lighter performance
-
-### Todo
 - Skip WordPress SVN checkouts + updates
 - Remove WP related hosts (start with only vvv.dev for the dashboard)
+
+### Todo
 - Simple virtual host / symlink management
 - PHP7
 - Strip all providers except virtualbox

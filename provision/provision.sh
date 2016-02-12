@@ -58,7 +58,6 @@ apt_package_check_list=(
 
   # other packages that come in handy
   imagemagick
-  subversion
   git-core
   zip
   unzip
@@ -127,12 +126,6 @@ profile_setup() {
   cp "/srv/config/bash_aliases" "/home/vagrant/.bash_aliases"
   cp "/srv/config/vimrc" "/home/vagrant/.vimrc"
 
-  if [[ ! -d "/home/vagrant/.subversion" ]]; then
-    mkdir "/home/vagrant/.subversion"
-  fi
-
-  cp "/srv/config/subversion-servers" "/home/vagrant/.subversion/servers"
-
   if [[ ! -d "/home/vagrant/bin" ]]; then
     mkdir "/home/vagrant/bin"
   fi
@@ -142,7 +135,6 @@ profile_setup() {
   echo " * Copied /srv/config/bash_profile                      to /home/vagrant/.bash_profile"
   echo " * Copied /srv/config/bash_aliases                      to /home/vagrant/.bash_aliases"
   echo " * Copied /srv/config/vimrc                             to /home/vagrant/.vimrc"
-  echo " * Copied /srv/config/subversion-servers                to /home/vagrant/.subversion/servers"
   echo " * rsync'd /srv/config/homebin                          to /home/vagrant/bin"
 
   # If a bash_prompt file exists in the VVV config/ directory, copy to the VM.

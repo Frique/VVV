@@ -74,7 +74,7 @@ Vagrant.configure("2") do |config|
     override.vm.box = "ericmann/trusty32"
   end
 
-  config.vm.hostname = "vvv"
+  config.vm.hostname = "vvv-lite"
 
   # Local Machine Hosts
   #

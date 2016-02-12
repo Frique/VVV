@@ -64,8 +64,8 @@ apt_package_check_list=(
   ngrep
   curl
   make
-  vim
-  colordiff
+  #vim
+  #colordiff
   postfix
 
   # ntp service to keep clock current
@@ -207,8 +207,8 @@ package_install() {
     apt-key export C7917B12 | apt-key add -
 
     # Update all of the package references before installing anything
-    #echo "Running apt-get update..."
-    #apt-get update -y
+    echo "Running apt-get update..."
+    apt-get update -y
 
     # Install required packages
     echo "Installing missing apt-get packages..."

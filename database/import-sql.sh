@@ -7,10 +7,7 @@
 # to create the necessary tables and data required by a database.
 #
 # For an import to work properly, the SQL file should be named `db_name.sql` in which
-# `db_name` matches the name of a database already created in {vvv-dir}/database/init-custom.sql
-# or {vvv-dir}/database/init.sql.
-#
-# If a filename does not match an existing database, it will not import correctly.
+# `db_name` matches the name of a database.
 #
 # If tables already exist for a database, the import will not be attempted again. After an
 # initial import, the data will remain persistent and available to MySQL on future boots
@@ -32,19 +29,26 @@ then
 	pre_dot=${file%%.sql}
 	mysql_cmd='SHOW TABLES FROM `'$pre_dot'`' # Required to support hypens in database names
 	db_exist=`mysql -u root -proot --skip-column-names -e "$mysql_cmd"`
+
+	# Create DB if it doesn't exist yet
 	if [ "$?" != "0" ]
 	then
-		printf "  * Error - Create $pre_dot database via init-custom.sql before attempting import\n\n"
-	else
-		if [ "" == "$db_exist" ]
-		then
-			printf "mysql -u root -proot $pre_dot < $pre_dot.sql\n"
-			mysql -u root -proot $pre_dot < $pre_dot.sql
-			printf "  * Import of $pre_dot successful\n"
-		else
-			printf "  * Skipped import of $pre_dot - tables exist\n"
-		fi
+		printf "  * Found backup for DB that doesn't exist yet. Creating $pre_dot\n\n"
+		mysql_cmd='CREATE DATABASE IF NOT EXISTS '$pre_dot
+		create_db=`mysql -u root -proot -e "$mysql_cmd"`
+		mysql_cmd='GRANT ALL PRIVILEGES ON '$pre_dot'.* TO admin@localhost IDENTIFIED BY admin'
+		grant_db=`mysql -u root -proot -e "$mysql_cmd"`
 	fi
+
+	if [ "" == "$db_exist" ]
+	then
+		printf "mysql -u root -proot $pre_dot < $pre_dot.sql\n"
+		mysql -u root -proot $pre_dot < $pre_dot.sql
+		printf "  * Import of $pre_dot successful\n"
+	else
+		printf "  * Skipped import of $pre_dot - tables exist\n"
+	fi
+
 	done
 	printf "Databases imported\n"
 else

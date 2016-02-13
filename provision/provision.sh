@@ -388,15 +388,6 @@ mysql_setup() {
 
     # IMPORT SQL
     #
-    # Create the databases (unique to system) that will be imported with
-    # the mysqldump files located in database/backups/
-    if [[ -f "/srv/database/init-custom.sql" ]]; then
-      mysql -u "root" -p"root" < "/srv/database/init-custom.sql"
-      echo -e "\nInitial custom MySQL scripting..."
-    else
-      echo -e "\nNo custom MySQL scripting found in database/init-custom.sql, skipping..."
-    fi
-
     # Setup MySQL by importing an init file that creates necessary
     # users and databases that our vagrant setup relies on.
     mysql -u "root" -p"root" < "/srv/database/init.sql"

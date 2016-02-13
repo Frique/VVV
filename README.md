@@ -11,18 +11,18 @@ A fork of https://github.com/Varying-Vagrant-Vagrants/VVV for personal use.
 
 ### Applied features
 - Switch to trusty32 for lighter performance
-- Skip WordPress SVN checkouts + updates
+- Skip WordPress installs, updates & databases
 - Remove WP related hosts (start with only vvv.dev for the dashboard)
 - Strip vagrant version pre-1.3 code
-- Skip apt-get update
-- Skip subversion (svn) installation
 - Enable SSL certificate for all .dev domains
+- Automatically create a database for an .sql dump if it doesn't exist (user: admin/admin)
+- Skip installation of subversion (svn), vim, colordiff
 
 ### Todo
 - Avoid checking if the ubuntu box is up to date
-- Automatically create a database for an .sql dump if it doesn't exist (import-sql.sh)
-- Drop a database & import the .sql is it already exists (gives the ability to overwrite with new dump)
-- No Xdebug
+- Drop & reimport a database if it already exists (adds the ability to overwrite with newer version)
+- No Xdebug?
 - Simplify virtual host / symlink management
 - PHP7
 - Strip all VM providers except virtualbox
+- Skip apt-get update?

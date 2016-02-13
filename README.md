@@ -21,8 +21,13 @@ A fork of https://github.com/Varying-Vagrant-Vagrants/VVV for personal use.
 ### Todo
 - Avoid checking if the ubuntu box is up to date
 - Drop & reimport a database if it already exists (adds the ability to overwrite with newer version)
+- Run DB checks during vagrant up
 - No Xdebug?
-- Simplify virtual host / symlink management
 - PHP7
+- Simplify virtual host / symlink management (tweak provision:custom_vvv())
 - Strip all VM providers except virtualbox
 - Skip apt-get update?
+- Make provision.sh:tools_install() lighter
+
+### Reference
+- Connect to mysql externally via 192.168.50.4:external/external

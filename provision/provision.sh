@@ -100,7 +100,7 @@ network_detection() {
   # to us. If 3 attempts with a timeout of 5 seconds are not successful, then we'll
   # skip a few things further in provisioning rather than create a bunch of errors.
   if [[ "$(wget --tries=3 --timeout=5 --spider http://google.com 2>&1 | grep 'connected')" ]]; then
-    echo "Network connection detected..."
+#    echo "Network connection detected..."
     ping_result="Connected"
   else
     echo "Network connection not detected. Unable to reach google.com..."
@@ -224,14 +224,14 @@ tools_install() {
   #
   # Make sure we have the latest npm version and the update checker module
   npm install -g npm
-  npm install -g npm-check-updates
+#  npm install -g npm-check-updates
 
   # xdebug
   #
   # XDebug 2.2.3 is provided with the Ubuntu install by default. The PECL
   # installation allows us to use a later version. Not specifying a version
   # will load the latest stable.
-  pecl install xdebug
+#  pecl install xdebug
 
   # ack-grep
   #
@@ -262,27 +262,27 @@ tools_install() {
 
   # Update both Composer and any global packages. Updates to Composer are direct from
   # the master branch on its GitHub repository.
-  if [[ -n "$(composer --version --no-ansi | grep 'Composer version')" ]]; then
-    echo "Updating Composer..."
-    COMPOSER_HOME=/usr/local/src/composer composer self-update
-    COMPOSER_HOME=/usr/local/src/composer composer -q global require --no-update phpunit/phpunit:4.8.*
-    COMPOSER_HOME=/usr/local/src/composer composer -q global require --no-update phpunit/php-invoker:1.1.*
-    COMPOSER_HOME=/usr/local/src/composer composer -q global require --no-update mockery/mockery:0.9.*
-    COMPOSER_HOME=/usr/local/src/composer composer -q global require --no-update d11wtq/boris:v1.0.8
-    COMPOSER_HOME=/usr/local/src/composer composer -q global config bin-dir /usr/local/bin
-    COMPOSER_HOME=/usr/local/src/composer composer global update
-  fi
+#  if [[ -n "$(composer --version --no-ansi | grep 'Composer version')" ]]; then
+#    echo "Updating Composer..."
+#    COMPOSER_HOME=/usr/local/src/composer composer self-update
+#    COMPOSER_HOME=/usr/local/src/composer composer -q global require --no-update phpunit/phpunit:4.8.*
+#    COMPOSER_HOME=/usr/local/src/composer composer -q global require --no-update phpunit/php-invoker:1.1.*
+#    COMPOSER_HOME=/usr/local/src/composer composer -q global require --no-update mockery/mockery:0.9.*
+#    COMPOSER_HOME=/usr/local/src/composer composer -q global require --no-update d11wtq/boris:v1.0.8
+#    COMPOSER_HOME=/usr/local/src/composer composer -q global config bin-dir /usr/local/bin
+#    COMPOSER_HOME=/usr/local/src/composer composer global update
+#  fi
 
   # Grunt
   #
   # Install or Update Grunt based on current state.  Updates are direct
   # from NPM
   if [[ "$(grunt --version)" ]]; then
-    echo "Updating Grunt CLI"
-    npm update -g grunt-cli &>/dev/null
-    npm update -g grunt-sass &>/dev/null
-    npm update -g grunt-cssjanus &>/dev/null
-    npm update -g grunt-rtlcss &>/dev/null
+#    echo "Updating Grunt CLI"
+#    npm update -g grunt-cli &>/dev/null
+#    npm update -g grunt-sass &>/dev/null
+#    npm update -g grunt-cssjanus &>/dev/null
+#    npm update -g grunt-rtlcss &>/dev/null
   else
     echo "Installing Grunt CLI"
     npm install -g grunt-cli &>/dev/null
@@ -543,28 +543,28 @@ php_codesniff() {
   if [[ ! -d "/srv/www/phpcs" ]]; then
     echo -e "\nDownloading PHP_CodeSniffer (phpcs), see https://github.com/squizlabs/PHP_CodeSniffer"
     git clone -b master "https://github.com/squizlabs/PHP_CodeSniffer.git" "/srv/www/phpcs"
-  else
-    cd /srv/www/phpcs
-    if [[ $(git rev-parse --abbrev-ref HEAD) == 'master' ]]; then
-      echo -e "\nUpdating PHP_CodeSniffer (phpcs)..."
-      git pull --no-edit origin master
-    else
-      echo -e "\nSkipped updating PHP_CodeSniffer since not on master branch"
-    fi
+#  else
+#    cd /srv/www/phpcs
+#    if [[ $(git rev-parse --abbrev-ref HEAD) == 'master' ]]; then
+#      echo -e "\nUpdating PHP_CodeSniffer (phpcs)..."
+#      git pull --no-edit origin master
+#    else
+#      echo -e "\nSkipped updating PHP_CodeSniffer since not on master branch"
+#    fi
   fi
 
   # Sniffs WordPress Coding Standards
   if [[ ! -d "/srv/www/phpcs/CodeSniffer/Standards/WordPress" ]]; then
     echo -e "\nDownloading WordPress-Coding-Standards, sniffs for PHP_CodeSniffer, see https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards"
     git clone -b master "https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards.git" "/srv/www/phpcs/CodeSniffer/Standards/WordPress"
-  else
-    cd /srv/www/phpcs/CodeSniffer/Standards/WordPress
-    if [[ $(git rev-parse --abbrev-ref HEAD) == 'master' ]]; then
-      echo -e "\nUpdating PHP_CodeSniffer WordPress Coding Standards..."
-      git pull --no-edit origin master
-    else
-      echo -e "\nSkipped updating PHPCS WordPress Coding Standards since not on master branch"
-    fi
+#  else
+#    cd /srv/www/phpcs/CodeSniffer/Standards/WordPress
+#    if [[ $(git rev-parse --abbrev-ref HEAD) == 'master' ]]; then
+#      echo -e "\nUpdating PHP_CodeSniffer WordPress Coding Standards..."
+#      git pull --no-edit origin master
+#    else
+#      echo -e "\nSkipped updating PHPCS WordPress Coding Standards since not on master branch"
+#    fi
   fi
 
   # Install the standards in PHPCS
@@ -582,8 +582,8 @@ phpmyadmin_setup() {
     tar -xf phpmyadmin.tar.gz
     mv phpMyAdmin-4.4.10-all-languages database-admin
     rm phpmyadmin.tar.gz
-  else
-    echo "PHPMyAdmin already installed."
+#  else
+#    echo "PHPMyAdmin already installed."
   fi
   cp "/srv/config/phpmyadmin-config/config.inc.php" "/srv/www/default/database-admin/"
 }

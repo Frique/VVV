@@ -156,7 +156,7 @@ package_check() {
       space_count="$(expr 20 - "${#pkg}")" #11
       pack_space_count="$(expr 30 - "${#package_version}")"
       real_space="$(expr ${space_count} + ${pack_space_count} + ${#package_version})"
-      printf " * $pkg %${real_space}.${#package_version}s ${package_version}\n"
+#      printf " * $pkg %${real_space}.${#package_version}s ${package_version}\n"
     else
       echo " *" $pkg [not installed]
       apt_package_install_list+=($pkg)
@@ -277,17 +277,18 @@ tools_install() {
   #
   # Install or Update Grunt based on current state.  Updates are direct
   # from NPM
-  if [[ "$(grunt --version)" ]]; then
+#  if [[ ! "$(grunt --version)" ]]; then
 #    echo "Updating Grunt CLI"
 #    npm update -g grunt-cli &>/dev/null
 #    npm update -g grunt-sass &>/dev/null
 #    npm update -g grunt-cssjanus &>/dev/null
 #    npm update -g grunt-rtlcss &>/dev/null
-  else
+# fi
+  if [[ ! "$(grunt --version)" ]]; then
     echo "Installing Grunt CLI"
     npm install -g grunt-cli &>/dev/null
     npm install -g grunt-sass &>/dev/null
-    npm install -g grunt-cssjanus &>/dev/null
+#    npm install -g grunt-cssjanus &>/dev/null
     npm install -g grunt-rtlcss &>/dev/null
   fi
 
@@ -414,7 +415,7 @@ mailcatcher_setup() {
     space_count="$(( 20 - ${#pkg}))" #11
     pack_space_count="$(( 30 - ${#rvm_version}))"
     real_space="$(( ${space_count} + ${pack_space_count} + ${#rvm_version}))"
-    printf " * $pkg %${real_space}.${#rvm_version}s ${rvm_version}\n"
+#    printf " * $pkg %${real_space}.${#rvm_version}s ${rvm_version}\n"
   else
     # RVM key D39DC0E3
     # Signatures introduced in 1.26.0
@@ -432,23 +433,25 @@ mailcatcher_setup() {
     space_count="$(( 20 - ${#pkg}))" #11
     pack_space_count="$(( 30 - ${#mailcatcher_version}))"
     real_space="$(( ${space_count} + ${pack_space_count} + ${#mailcatcher_version}))"
-    printf " * $pkg %${real_space}.${#mailcatcher_version}s ${mailcatcher_version}\n"
+#    printf " * $pkg %${real_space}.${#mailcatcher_version}s ${mailcatcher_version}\n"
   else
     echo " * Mailcatcher [not installed]"
     /usr/bin/env rvm default@mailcatcher --create do gem install mailcatcher --no-rdoc --no-ri
     /usr/bin/env rvm wrapper default@mailcatcher --no-prefix mailcatcher catchmail
   fi
 
-  if [[ -f "/etc/init/mailcatcher.conf" ]]; then
-    echo " *" Mailcatcher upstart already configured.
-  else
+#  if [[ -f "/etc/init/mailcatcher.conf" ]]; then
+#    echo " *" Mailcatcher upstart already configured.
+#  fi
+  if [[ ! -f "/etc/init/mailcatcher.conf" ]]; then
     cp "/srv/config/init/mailcatcher.conf"  "/etc/init/mailcatcher.conf"
     echo " * Copied /srv/config/init/mailcatcher.conf    to /etc/init/mailcatcher.conf"
   fi
 
-  if [[ -f "/etc/php5/mods-available/mailcatcher.ini" ]]; then
-    echo " *" Mailcatcher php5 fpm already configured.
-  else
+#  if [[ -f "/etc/php5/mods-available/mailcatcher.ini" ]]; then
+#    echo " *" Mailcatcher php5 fpm already configured.
+#  fi
+  if [[ ! -f "/etc/php5/mods-available/mailcatcher.ini" ]]; then
     cp "/srv/config/php5-fpm-config/mailcatcher.ini" "/etc/php5/mods-available/mailcatcher.ini"
     echo " * Copied /srv/config/php5-fpm-config/mailcatcher.ini    to /etc/php5/mods-available/mailcatcher.ini"
   fi
@@ -486,11 +489,11 @@ wp_cli() {
     git clone "https://github.com/wp-cli/wp-cli.git" "/srv/www/wp-cli"
     cd /srv/www/wp-cli
     composer install
-  else
-    echo -e "\nUpdating wp-cli..."
-    cd /srv/www/wp-cli
-    git pull --rebase origin master
-    composer update
+#  else
+#    echo -e "\nUpdating wp-cli..."
+#    cd /srv/www/wp-cli
+#    git pull --rebase origin master
+#    composer update
   fi
   # Link `wp` to the `/usr/local/bin` directory
   ln -sf "/srv/www/wp-cli/bin/wp" "/usr/local/bin/wp"
@@ -506,35 +509,33 @@ memcached_admin() {
     tar -xf phpmemcachedadmin.tar.gz
     mv phpmemcacheadmin* memcached-admin
     rm phpmemcachedadmin.tar.gz
-  else
-    echo "phpMemcachedAdmin already installed."
+#  else
+#    echo "phpMemcachedAdmin already installed."
   fi
 }
 
 opcached_status(){
-  # Checkout Opcache Status to provide a dashboard for viewing statistics
-  # about PHP's built in opcache.
+  # Checkout Opcache Status to provide a dashboard for viewing statistics about PHP's built in opcache.
   if [[ ! -d "/srv/www/default/opcache-status" ]]; then
     echo -e "\nDownloading Opcache Status, see https://github.com/rlerdorf/opcache-status/"
     cd /srv/www/default
     git clone "https://github.com/rlerdorf/opcache-status.git" opcache-status
-  else
-    echo -e "\nUpdating Opcache Status"
-    cd /srv/www/default/opcache-status
-    git pull --rebase origin master
+#  else
+#    echo -e "\nUpdating Opcache Status"
+#    cd /srv/www/default/opcache-status
+#    git pull --rebase origin master
   fi
 }
 
 webgrind_install() {
-  # Webgrind install (for viewing callgrind/cachegrind files produced by
-  # xdebug profiler)
+  # Webgrind install (for viewing callgrind/cachegrind files produced by xdebug profiler)
   if [[ ! -d "/srv/www/default/webgrind" ]]; then
     echo -e "\nDownloading webgrind, see https://github.com/michaelschiller/webgrind.git"
     git clone "https://github.com/michaelschiller/webgrind.git" "/srv/www/default/webgrind"
-  else
-    echo -e "\nUpdating webgrind..."
-    cd /srv/www/default/webgrind
-    git pull --rebase origin master
+#  else
+#    echo -e "\nUpdating webgrind..."
+#    cd /srv/www/default/webgrind
+#    git pull --rebase origin master
   fi
 }
 

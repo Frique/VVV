@@ -1,0 +1,10 @@
+
+server {
+    listen       80;               # Port
+    listen       443 ssl;          # SSL port
+    server_name  project.dev;      # Domain(s). Multiple domains or subdomains can be space delimited. See http://nginx.org/en/docs/http/server_names.html
+    root         /srv/www/project; # Project path on the guest machine (set the symlink in your Customfile)
+    include /etc/nginx/nginx-wp-common.conf;
+}
+#server {
+#}

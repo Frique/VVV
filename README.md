@@ -17,12 +17,12 @@ A fork of https://github.com/Varying-Vagrant-Vagrants/VVV for personal use.
 - Automatically create a database for an .sql dump if it doesn't exist during provision
 - Removed installation of subversion (svn), vim, colordiff
 - Added ./Customfile-sample and ./www/vvv-nginx.conf-sample
+- Import new .sql databases from ./database/backups during vagrant up
 
 ### Todo
+- Drop & reimport a database if it already exists (adds the ability to overwrite with newer version)
 - Automate/simplify project / virtual host / symlink / database management
 - Avoid checking if the ubuntu box is up to date
-- Drop & reimport a database if it already exists (adds the ability to overwrite with newer version)
-- Run DB checks during vagrant up
 - No Xdebug?
 - PHP7
 - Strip all VM providers except virtualbox

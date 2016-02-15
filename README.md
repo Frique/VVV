@@ -1,13 +1,14 @@
 A fork of https://github.com/Varying-Vagrant-Vagrants/VVV for personal use.
 
 ### Purpose
-- Focus on hooking into existing (WP) projects
-- Speed up the "vagrant up" process by stripping bloat from the provisioning
+- Meant to run as a single instance running unlimited projects
+- Focus on hooking into existing (WP) projects in any location of the local machine
+- Speed up the "vagrant up / provision" process by stripping bloat from the provisioning
 - Simplify host + symlink creation
 - Expand DB import/export functionality
-- Anything that makes it ideal as a single box with many projects
 - Keep list of changes here
 - Keep repo up to date with VVV
+- Separate vagrant up & provision actions for optimal machine (re)boot workflow
 
 ### Applied features
 - Switched to trusty32 for lighter performance
@@ -21,7 +22,7 @@ A fork of https://github.com/Varying-Vagrant-Vagrants/VVV for personal use.
 
 ### Todo
 - Drop & reimport a database if it already exists (adds the ability to overwrite with newer version)
-- Automate/simplify project / virtual host / symlink / database management
+- Automate/simplify project / virtual host / symlink / database management (Create custom setup file to manage everything in 1 place?)
 - Avoid checking if the ubuntu box is up to date
 - No Xdebug?
 - PHP7
@@ -29,6 +30,7 @@ A fork of https://github.com/Varying-Vagrant-Vagrants/VVV for personal use.
 - Skip apt-get update?
 - Make provision.sh:tools_install() lighter
 - Add empty database .sql sample for new projects
+- Optionally add a WP admin user to new database imports
 
 ### Adding a project
 1. Existing DB: Put your .sql in **./database/backups**

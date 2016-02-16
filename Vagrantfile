@@ -217,6 +217,13 @@ Vagrant.configure("2") do |config|
     end
   end
 
+  # Project symlinks
+  #
+  # Reads a project array from the setup file (setup-custom.yaml) and creates the required symlinks for each
+  setup["projects"].each do |project|
+	config.vm.synced_folder project["localpath"], project["guestpath"], :owner => "www-data"
+  end
+
   # Customfile - POSSIBLY UNSTABLE
   #
   # Use this to insert your own (and possibly rewrite) Vagrant config lines. Helpful

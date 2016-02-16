@@ -31,6 +31,8 @@ A fork of https://github.com/Varying-Vagrant-Vagrants/VVV for personal use.
 - Make provision.sh:tools_install() lighter
 - Add empty database .sql sample for new projects
 - Optionally add a WP admin user to new database imports
+- Load box & project setup from single setup.yaml file
+- Append setup-custom.yaml to setup.yaml (overwrite defaults)
 
 ### Adding a project
 1. Existing DB: Put your .sql in **./database/backups**

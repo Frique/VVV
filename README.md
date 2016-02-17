@@ -1,7 +1,6 @@
 A fork of https://github.com/Varying-Vagrant-Vagrants/VVV for personal use.
 
-#### Purpose
---
+## Purpose
 - Meant to run as a single instance running unlimited projects
 - Focus on hooking into existing (WP) projects in any location of the local machine
 - Speed up the "vagrant up / provision" process by stripping bloat from the provisioning
@@ -11,8 +10,7 @@ A fork of https://github.com/Varying-Vagrant-Vagrants/VVV for personal use.
 - Keep list of changes here
 - Keep repo up to date with VVV
 
-#### Applied features
---
+## Applied features
 - Load box & project setup from single setup.yaml file
 - Overwrite default setup with setup-custom.yaml
 - Removed WordPress installs, updates, databases & hosts (start with only vvv.dev for the dashboard)
@@ -22,8 +20,7 @@ A fork of https://github.com/Varying-Vagrant-Vagrants/VVV for personal use.
 - Removed installation of subversion (svn), vim, colordiff
 - Added ./www/vvv-nginx.conf-sample
 
-#### Todo
---
+## Todo
 - Apply project setup to nginx server setup
 - Drop & reimport a database if it already exists (adds the ability to overwrite with newer version)
 - Add empty database .sql sample for new projects
@@ -36,16 +33,14 @@ A fork of https://github.com/Varying-Vagrant-Vagrants/VVV for personal use.
 - Write a script to generate a new WP install with customizable defaults
 - Optionally add a WP admin user to new database imports
 
-#### How to add a project
---
+## How to add a project
 1. Put your existing .sql in **./database/backups** ~~or copy & rename ./database/empty.sql to start with an empty database~~
 2. Rename ./setup-custom.yaml-sample to **./setup-custom.yaml** and add your project details
 3. Rename ./www/vvv-nginx.conf-sample to **./www/vvv-nginx.conf** and add your project's vhost config
 4. Add the domain to your **local hosts file**, pointing to 192.168.50.4
 5. Run vagrant provision / vagrant reload --provision
 
-#### Other references
---
+## Other references
 - vagrant up
 - vagrant suspend
 - vagrant halt

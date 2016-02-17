@@ -9,14 +9,18 @@ vagrant_dir = File.expand_path(File.dirname(__FILE__))
 Vagrant.configure("2") do |config|
 
   # Load the setup file
-  if File.exists? custom_setup_file then
-	setup = YAML::load(File.read(custom_setup_file))
-  else
-	setup = YAML::load(File.read(setup_file))
+  setup = YAML::load(File.read(setup_file))
+
+  # Merge with custom setup file
+  if File.exist? custom_setup_file
+    setup_custom = YAML::load(File.read(custom_setup_file))
+    setup.merge!(setup_custom)
   end
 
-  # Store the current version of Vagrant for use in conditionals when dealing
-  # with possible backward compatible issues.
+  # A little feedback on the loaded setup data
+  puts "Setup file loaded. Setting up a #{setup['box']} box using #{setup['cpus']} CPUs and #{setup['memory'].to_i / 1024}GB RAM."
+
+  # Store the current version of Vagrant for use in conditionals when dealing with possible backward compatible issues.
   vagrant_version = Vagrant::VERSION.sub(/^v/, '')
 
   # Configurations from 1.0.x can be placed in Vagrant 1.1.x specs like the following.

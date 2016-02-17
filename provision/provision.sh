@@ -7,8 +7,7 @@
 # or `vagrant reload` are used. It provides all of the default packages and
 # configurations included with Varying Vagrant Vagrants.
 
-# By storing the date now, we can calculate the duration of provisioning at the
-# end of this script.
+# By storing the date now, we can calculate the duration of provisioning at the end of this script.
 start_seconds="$(date +%s)"
 
 # PACKAGE INSTALLATION
@@ -27,9 +26,7 @@ apt_package_check_list=(
 
   # PHP5
   #
-  # Our base packages for php5. As long as php5-fpm and php5-cli are
-  # installed, there is no need to install the general php5 package, which
-  # can sometimes install apache as a requirement.
+  # Our base packages for php5. As long as php5-fpm and php5-cli are installed, there is no need to install the general php5 package, which can sometimes install apache as a requirement.
   php5-fpm
   php5-cli
 
@@ -76,16 +73,14 @@ apt_package_check_list=(
   # Req'd for Webgrind
   graphviz
 
-  # dos2unix
-  # Allows conversion of DOS style line endings to something we'll have less
-  # trouble with in Linux.
+  # Allows conversion of DOS style line endings to something we'll have less trouble with in Linux.
   dos2unix
 
   # nodejs for use by grunt
   g++
   nodejs
 
-  #Mailcatcher requirement
+  # Mailcatcher requirement
   libsqlite3-dev
 
 )
@@ -93,13 +88,8 @@ apt_package_check_list=(
 ### FUNCTIONS
 
 network_detection() {
-  # Network Detection
-  #
-  # Make an HTTP request to google.com to determine if outside access is available
-  # to us. If 3 attempts with a timeout of 5 seconds are not successful, then we'll
-  # skip a few things further in provisioning rather than create a bunch of errors.
+  # Make an HTTP request to google.com to determine if outside access is available to us. If 3 attempts with a timeout of 5 seconds are not successful, then we'll skip a few things further in provisioning rather than create a bunch of errors.
   if [[ "$(wget --tries=3 --timeout=5 --spider http://google.com 2>&1 | grep 'connected')" ]]; then
-#    echo "Network connection detected..."
     ping_result="Connected"
   else
     echo "Network connection not detected. Unable to reach google.com..."
@@ -131,32 +121,25 @@ profile_setup() {
 
   rsync -rvzh --delete "/srv/config/homebin/" "/home/vagrant/bin/"
 
-  echo " * Copied /srv/config/bash_profile                      to /home/vagrant/.bash_profile"
-  echo " * Copied /srv/config/bash_aliases                      to /home/vagrant/.bash_aliases"
-  echo " * Copied /srv/config/vimrc                             to /home/vagrant/.vimrc"
-  echo " * rsync'd /srv/config/homebin                          to /home/vagrant/bin"
-
   # If a bash_prompt file exists in the VVV config/ directory, copy to the VM.
   if [[ -f "/srv/config/bash_prompt" ]]; then
     cp "/srv/config/bash_prompt" "/home/vagrant/.bash_prompt"
-    echo " * Copied /srv/config/bash_prompt to /home/vagrant/.bash_prompt"
   fi
 }
 
 package_check() {
-  # Loop through each of our packages that should be installed on the system. If
-  # not yet installed, it should be added to the array of packages to install.
+  # Loop through each of our packages that should be installed on the system. If not yet installed, it should be added to the array of packages to install.
   local pkg
   local package_version
 
   for pkg in "${apt_package_check_list[@]}"; do
     package_version=$(dpkg -s "${pkg}" 2>&1 | grep 'Version:' | cut -d " " -f 2)
-    if [[ -n "${package_version}" ]]; then
-      space_count="$(expr 20 - "${#pkg}")" #11
-      pack_space_count="$(expr 30 - "${#package_version}")"
-      real_space="$(expr ${space_count} + ${pack_space_count} + ${#package_version})"
+#    if [[ -n "${package_version}" ]]; then
+#      space_count="$(expr 20 - "${#pkg}")" #11
+#      pack_space_count="$(expr 30 - "${#package_version}")"
+#      real_space="$(expr ${space_count} + ${pack_space_count} + ${#package_version})"
 #      printf " * $pkg %${real_space}.${#package_version}s ${package_version}\n"
-    else
+    if [[ ! -n "${package_version}" ]]; then
       echo " *" $pkg [not installed]
       apt_package_install_list+=($pkg)
     fi
@@ -168,18 +151,13 @@ package_install() {
 
   # MySQL
   #
-  # Use debconf-set-selections to specify the default password for the root MySQL
-  # account. This runs on every provision, even if MySQL has been installed. If
-  # MySQL is already installed, it will not affect anything.
+  # Use debconf-set-selections to specify the default password for the root MySQL account. This runs on every provision, even if MySQL has been installed. If MySQL is already installed, it will not affect anything.
   echo mysql-server mysql-server/root_password password "root" | debconf-set-selections
   echo mysql-server mysql-server/root_password_again password "root" | debconf-set-selections
 
   # Postfix
   #
-  # Use debconf-set-selections to specify the selections in the postfix setup. Set
-  # up as an 'Internet Site' with the host name 'vvv'. Note that if your current
-  # Internet connection does not allow communication over port 25, you will not be
-  # able to send mail, even with postfix installed.
+  # Use debconf-set-selections to specify the selections in the postfix setup. Set up as an 'Internet Site' with the host name 'vvv'. Note that if your current Internet connection does not allow communication over port 25, you will not be able to send mail, even with postfix installed.
   echo postfix postfix/main_mailer_type select Internet Site | debconf-set-selections
   echo postfix postfix/mailname string vvv | debconf-set-selections
 
@@ -190,15 +168,10 @@ package_install() {
   ln -sf /srv/config/apt-source-append.list /etc/apt/sources.list.d/vvv-sources.list
   echo "Linked custom apt sources"
 
-  if [[ ${#apt_package_install_list[@]} = 0 ]]; then
-    echo -e "No apt packages to install.\n"
-  else
-    # Before running `apt-get update`, we should add the public keys for
-    # the packages that we are installing from non standard sources via
-    # our appended apt source.list
+  if [[ ${#apt_package_install_list[@]} > 0 ]]; then
+    # Before running `apt-get update`, we should add the public keys for the packages that we are installing from non standard sources via our appended apt source.list
 
     # Retrieve the Nginx signing key from nginx.org
-    echo "Applying Nginx signing key..."
     wget --quiet "http://nginx.org/keys/nginx_signing.key" -O- | apt-key add -
 
     # Apply the nodejs assigning key
@@ -227,18 +200,13 @@ tools_install() {
 
   # xdebug
   #
-  # XDebug 2.2.3 is provided with the Ubuntu install by default. The PECL
-  # installation allows us to use a later version. Not specifying a version
-  # will load the latest stable.
+  # XDebug 2.2.3 is provided with the Ubuntu install by default. The PECL installation allows us to use a later version. Not specifying a version will load the latest stable.
 #  pecl install xdebug
 
   # ack-grep
   #
-  # Install ack-rep directory from the version hosted at beyondgrep.com as the
-  # PPAs for Ubuntu Precise are not available yet.
-  if [[ -f /usr/bin/ack ]]; then
-    echo "ack-grep already installed"
-  else
+  # Install ack-rep directory from the version hosted at beyondgrep.com as the PPAs for Ubuntu Precise are not available yet.
+  if [[ ! -f /usr/bin/ack ]]; then
     echo "Installing ack-grep as ack"
     curl -s http://beyondgrep.com/ack-2.14-single-file > "/usr/bin/ack" && chmod +x "/usr/bin/ack"
   fi
@@ -287,14 +255,13 @@ tools_install() {
     echo "Installing Grunt CLI"
     npm install -g grunt-cli &>/dev/null
     npm install -g grunt-sass &>/dev/null
-#    npm install -g grunt-cssjanus &>/dev/null
+    npm install -g grunt-cssjanus &>/dev/null
     npm install -g grunt-rtlcss &>/dev/null
   fi
 
   # Graphviz
   #
-  # Set up a symlink between the Graphviz path defined in the default Webgrind
-  # config and actual path.
+  # Set up a symlink between the Graphviz path defined in the default Webgrind config and actual path.
   echo "Adding graphviz symlink for Webgrind..."
   ln -sf "/usr/bin/dot" "/usr/local/bin/dot"
 }
@@ -321,7 +288,6 @@ nginx_setup() {
 
   # Used to ensure proper services are started on `vagrant up`
   cp "/srv/config/init/vvv-start.conf" "/etc/init/vvv-start.conf"
-  echo " * Copied /srv/config/init/vvv-start.conf               to /etc/init/vvv-start.conf"
 
   # Copy nginx configuration from local
   cp "/srv/config/nginx-config/nginx.conf" "/etc/nginx/nginx.conf"
@@ -330,10 +296,6 @@ nginx_setup() {
     mkdir "/etc/nginx/custom-sites/"
   fi
   rsync -rvzh --delete "/srv/config/nginx-config/sites/" "/etc/nginx/custom-sites/"
-
-  echo " * Copied /srv/config/nginx-config/nginx.conf           to /etc/nginx/nginx.conf"
-  echo " * Copied /srv/config/nginx-config/nginx-wp-common.conf to /etc/nginx/nginx-wp-common.conf"
-  echo " * Rsync'd /srv/config/nginx-config/sites/              to /etc/nginx/custom-sites"
 }
 
 phpfpm_setup() {
@@ -348,16 +310,8 @@ phpfpm_setup() {
   XDEBUG_PATH=$( find /usr -name 'xdebug.so' | head -1 )
   sed -i "1izend_extension=\"$XDEBUG_PATH\"" "/etc/php5/mods-available/xdebug.ini"
 
-  echo " * Copied /srv/config/php5-fpm-config/php5-fpm.conf     to /etc/php5/fpm/php5-fpm.conf"
-  echo " * Copied /srv/config/php5-fpm-config/www.conf          to /etc/php5/fpm/pool.d/www.conf"
-  echo " * Copied /srv/config/php5-fpm-config/php-custom.ini    to /etc/php5/fpm/conf.d/php-custom.ini"
-  echo " * Copied /srv/config/php5-fpm-config/opcache.ini       to /etc/php5/fpm/conf.d/opcache.ini"
-  echo " * Copied /srv/config/php5-fpm-config/xdebug.ini        to /etc/php5/mods-available/xdebug.ini"
-
   # Copy memcached configuration from local
   cp "/srv/config/memcached-config/memcached.conf" "/etc/memcached.conf"
-
-  echo " * Copied /srv/config/memcached-config/memcached.conf   to /etc/memcached.conf"
 }
 
 mysql_setup() {
@@ -366,35 +320,28 @@ mysql_setup() {
 
   exists_mysql="$(service mysql status)"
   if [[ "mysql: unrecognized service" != "${exists_mysql}" ]]; then
-    echo -e "\nSetup MySQL configuration file links..."
+#    echo -e "\nSetup MySQL configuration file links..."
 
     # Copy mysql configuration from local
     cp "/srv/config/mysql-config/my.cnf" "/etc/mysql/my.cnf"
     cp "/srv/config/mysql-config/root-my.cnf" "/home/vagrant/.my.cnf"
 
-    echo " * Copied /srv/config/mysql-config/my.cnf               to /etc/mysql/my.cnf"
-    echo " * Copied /srv/config/mysql-config/root-my.cnf          to /home/vagrant/.my.cnf"
-
-    # MySQL gives us an error if we restart a non running service, which
-    # happens after a `vagrant halt`. Check to see if it's running before
-    # deciding whether to start or restart.
+    # MySQL gives us an error if we restart a non running service, which happens after a `vagrant halt`. Check to see if it's running before deciding whether to start or restart.
     if [[ "mysql stop/waiting" == "${exists_mysql}" ]]; then
       echo "service mysql start"
       service mysql start
-      else
+    else
       echo "service mysql restart"
       service mysql restart
     fi
 
     # IMPORT SQL
     #
-    # Setup MySQL by importing an init file that creates necessary
-    # users and databases that our vagrant setup relies on.
+    # Setup MySQL by importing an init file that creates necessary users and databases that our vagrant setup relies on.
     mysql -u "root" -p"root" < "/srv/database/init.sql"
     echo "Initial MySQL prep..."
 
-    # Process each mysqldump SQL file in database/backups to import
-    # an initial data set for MySQL.
+    # Process each mysqldump SQL file in database/backups to import an initial data set for MySQL.
     "/srv/database/import-sql.sh"
   else
     echo -e "\nMySQL is not installed. No databases imported."
@@ -404,16 +351,15 @@ mysql_setup() {
 mailcatcher_setup() {
   # Mailcatcher
   #
-  # Installs mailcatcher using RVM. RVM allows us to install the
-  # current version of ruby and all mailcatcher dependencies reliably.
+  # Installs mailcatcher using RVM. RVM allows us to install the current version of ruby and all mailcatcher dependencies reliably.
   local pkg
 
   rvm_version="$(/usr/bin/env rvm --silent --version 2>&1 | grep 'rvm ' | cut -d " " -f 2)"
   if [[ -n "${rvm_version}" ]]; then
     pkg="RVM"
-    space_count="$(( 20 - ${#pkg}))" #11
-    pack_space_count="$(( 30 - ${#rvm_version}))"
-    real_space="$(( ${space_count} + ${pack_space_count} + ${#rvm_version}))"
+#    space_count="$(( 20 - ${#pkg}))" #11
+#    pack_space_count="$(( 30 - ${#rvm_version}))"
+#    real_space="$(( ${space_count} + ${pack_space_count} + ${#rvm_version}))"
 #    printf " * $pkg %${real_space}.${#rvm_version}s ${rvm_version}\n"
   else
     # RVM key D39DC0E3
@@ -429,9 +375,9 @@ mailcatcher_setup() {
   mailcatcher_version="$(/usr/bin/env mailcatcher --version 2>&1 | grep 'mailcatcher ' | cut -d " " -f 2)"
   if [[ -n "${mailcatcher_version}" ]]; then
     pkg="Mailcatcher"
-    space_count="$(( 20 - ${#pkg}))" #11
-    pack_space_count="$(( 30 - ${#mailcatcher_version}))"
-    real_space="$(( ${space_count} + ${pack_space_count} + ${#mailcatcher_version}))"
+#    space_count="$(( 20 - ${#pkg}))" #11
+#    pack_space_count="$(( 30 - ${#mailcatcher_version}))"
+#    real_space="$(( ${space_count} + ${pack_space_count} + ${#mailcatcher_version}))"
 #    printf " * $pkg %${real_space}.${#mailcatcher_version}s ${mailcatcher_version}\n"
   else
     echo " * Mailcatcher [not installed]"
@@ -439,20 +385,12 @@ mailcatcher_setup() {
     /usr/bin/env rvm wrapper default@mailcatcher --no-prefix mailcatcher catchmail
   fi
 
-#  if [[ -f "/etc/init/mailcatcher.conf" ]]; then
-#    echo " *" Mailcatcher upstart already configured.
-#  fi
   if [[ ! -f "/etc/init/mailcatcher.conf" ]]; then
     cp "/srv/config/init/mailcatcher.conf"  "/etc/init/mailcatcher.conf"
-    echo " * Copied /srv/config/init/mailcatcher.conf    to /etc/init/mailcatcher.conf"
   fi
 
-#  if [[ -f "/etc/php5/mods-available/mailcatcher.ini" ]]; then
-#    echo " *" Mailcatcher php5 fpm already configured.
-#  fi
   if [[ ! -f "/etc/php5/mods-available/mailcatcher.ini" ]]; then
     cp "/srv/config/php5-fpm-config/mailcatcher.ini" "/etc/php5/mods-available/mailcatcher.ini"
-    echo " * Copied /srv/config/php5-fpm-config/mailcatcher.ini    to /etc/php5/mods-available/mailcatcher.ini"
   fi
 }
 
@@ -476,8 +414,7 @@ services_restart() {
 
   service php5-fpm restart
 
-  # Add the vagrant user to the www-data group so that it has better access
-  # to PHP and Nginx related files.
+  # Add the vagrant user to the www-data group so that it has better access to PHP and Nginx related files.
   usermod -a -G www-data vagrant
 }
 
@@ -499,8 +436,7 @@ wp_cli() {
 }
 
 memcached_admin() {
-  # Download and extract phpMemcachedAdmin to provide a dashboard view and
-  # admin interface to the goings on of memcached when running
+  # Download and extract phpMemcachedAdmin to provide a dashboard view and admin interface to the goings on of memcached when running
   if [[ ! -d "/srv/www/default/memcached-admin" ]]; then
     echo -e "\nDownloading phpMemcachedAdmin, see https://github.com/wp-cloud/phpmemcacheadmin"
     cd /srv/www/default
@@ -508,8 +444,6 @@ memcached_admin() {
     tar -xf phpmemcachedadmin.tar.gz
     mv phpmemcacheadmin* memcached-admin
     rm phpmemcachedadmin.tar.gz
-#  else
-#    echo "phpMemcachedAdmin already installed."
   fi
 }
 
@@ -582,8 +516,6 @@ phpmyadmin_setup() {
     tar -xf phpmyadmin.tar.gz
     mv phpMyAdmin-4.4.10-all-languages database-admin
     rm phpmyadmin.tar.gz
-#  else
-#    echo "PHPMyAdmin already installed."
   fi
   cp "/srv/config/phpmyadmin-config/config.inc.php" "/srv/www/default/database-admin/"
 }
@@ -614,10 +546,7 @@ custom_vvv(){
     sed "s#{vvv_path_to_folder}#$DIR#" "$SITE_CONFIG_FILE" > "/etc/nginx/custom-sites/""$DEST_CONFIG_FILE"
   done
 
-  # Parse any vvv-hosts file located in www/ or subdirectories of www/
-  # for domains to be added to the virtual machine's host file so that it is
-  # self aware.
-  #
+  # Parse any vvv-hosts file located in www/ or subdirectories of www/ for domains to be added to the virtual machine's host file so that it is self aware.
   # Domains should be entered on new lines.
 #  echo "Cleaning the virtual machine's /etc/hosts file..."
   sed -n '/# vvv-auto$/!p' /etc/hosts > /tmp/hosts

@@ -11,16 +11,14 @@ A fork of https://github.com/Varying-Vagrant-Vagrants/VVV for personal use.
 - Separate vagrant up & provision actions for optimal machine (re)boot workflow
 
 ### Applied features
-- Switched to trusty32 for lighter performance
+- Load box & project setup from single setup.yaml file
+- Overwrite default setup with setup-custom.yaml
 - Removed WordPress installs, updates, databases & hosts (start with only vvv.dev for the dashboard)
 - Stripped vagrant version pre-1.3 code
 - Enabled SSL certificate for all .dev domains
-- Automatically create a database for an .sql dump if it doesn't exist during provision
+- Automatically create & import databases for .sql dumps that don't exist during vagrant up & provision
 - Removed installation of subversion (svn), vim, colordiff
-- Added ./Customfile-sample and ./www/vvv-nginx.conf-sample
-- Import new .sql databases from ./database/backups during vagrant up
-- Load box & project setup from single setup.yaml file
-- Overwrite default setup with setup-custom.yaml
+- Added ./www/vvv-nginx.conf-sample
 
 ### Todo
 - Apply project setup to nginx server setup
@@ -51,4 +49,4 @@ A fork of https://github.com/Varying-Vagrant-Vagrants/VVV for personal use.
 - vagrant box update
 - Visit vvv.dev for the vvv dashboard
 - Connect to mysql externally via 192.168.50.4:external/external
-- Connect to imported databases with admin/admin
+- Connect to imported databases with localhost:admin/admin

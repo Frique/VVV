@@ -19,28 +19,27 @@ A fork of https://github.com/Varying-Vagrant-Vagrants/VVV for personal use.
 - Removed installation of subversion (svn), vim, colordiff
 - Added ./Customfile-sample and ./www/vvv-nginx.conf-sample
 - Import new .sql databases from ./database/backups during vagrant up
+- Load box & project setup from single setup.yaml file
+- Overwrite default setup with setup-custom.yaml
 
 ### Todo
+- Apply project setup to nginx server setup
 - Drop & reimport a database if it already exists (adds the ability to overwrite with newer version)
-- Automate/simplify project / virtual host / symlink / database management (Create custom setup file to manage everything in 1 place?)
+- Add empty database .sql sample for new projects
+- Reenable some of the update checks during provisioning when vital tasks are moved to vagrant up
 - Avoid checking if the ubuntu box is up to date
 - No Xdebug?
 - PHP7
-- Strip all VM providers except virtualbox
 - Skip apt-get update?
 - Make provision.sh:tools_install() lighter
-- Add empty database .sql sample for new projects
 - Optionally add a WP admin user to new database imports
-- Load box & project setup from single setup.yaml file
-- Append setup-custom.yaml to setup.yaml (overwrite defaults)
 
 ### Adding a project
-1. Existing DB: Put your .sql in **./database/backups**
-1. New DB: //todo Copy & rename ./database/empty.sql to start with an empty database
-2. Rename ./www/vvv-nginx.conf-sample to **./www/vvv-nginx.conf** and add your project's vhost config
-3. Rename ./Customfile-sample to **./Customfile** and add a symlink to your local project folder
+1. Put your existing .sql in **./database/backups** ~~or copy & rename ./database/empty.sql to start with an empty database~~
+2. Rename ./setup-custom.yaml-sample to **./setup-custom.yaml** and add your project details
+3. Rename ./www/vvv-nginx.conf-sample to **./www/vvv-nginx.conf** and add your project's vhost config
 4. Add the domain to your **local hosts file**, pointing to 192.168.50.4
-5. Run "vagrant provision"
+5. Run vagrant provision / vagrant reload --provision
 
 ### Other references
 - vagrant up

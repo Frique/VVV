@@ -4,11 +4,11 @@ A fork of https://github.com/Varying-Vagrant-Vagrants/VVV for personal use.
 - Meant to run as a single instance running unlimited projects
 - Focus on hooking into existing (WP) projects in any location of the local machine
 - Speed up the "vagrant up / provision" process by stripping bloat from the provisioning
+- Separate "vagrant up / provision" actions for optimal machine (re)boot workflow
 - Simplify host + symlink creation
 - Expand DB import/export functionality
 - Keep list of changes here
 - Keep repo up to date with VVV
-- Separate vagrant up & provision actions for optimal machine (re)boot workflow
 
 ### Applied features
 - Load box & project setup from single setup.yaml file
@@ -30,16 +30,17 @@ A fork of https://github.com/Varying-Vagrant-Vagrants/VVV for personal use.
 - PHP7
 - Skip apt-get update?
 - Make provision.sh:tools_install() lighter
+- Write a script to generate a new WP install with customizable defaults
 - Optionally add a WP admin user to new database imports
 
-### Adding a project
+### How to add a project
 1. Put your existing .sql in **./database/backups** ~~or copy & rename ./database/empty.sql to start with an empty database~~
 2. Rename ./setup-custom.yaml-sample to **./setup-custom.yaml** and add your project details
 3. Rename ./www/vvv-nginx.conf-sample to **./www/vvv-nginx.conf** and add your project's vhost config
 4. Add the domain to your **local hosts file**, pointing to 192.168.50.4
 5. Run vagrant provision / vagrant reload --provision
 
-### Other references
+#### Other references
 - vagrant up
 - vagrant suspend
 - vagrant halt

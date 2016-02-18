@@ -1,9 +1,9 @@
 ---
-box: "ubuntu/trusty64"
+box: "ubuntu/trusty32"
 memory: "2048"
 projects:
 -   host: project.dev
-    localpath: "~/project"
+    localpath: "~/project" #optional
     guestpath: "/srv/www/project.dev"
 -   host: project2.dev
     localpath: "~/project2"

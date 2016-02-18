@@ -521,8 +521,9 @@ phpmyadmin_setup() {
 }
 
 custom_vvv(){
+
   # Find new sites to setup.
-  # Kill previously symlinked Nginx configs
+  # Kill previously symlinked Nginx configs.
   # We can't know what sites have been removed, so we have to remove all the configs and add them back in again.
   find /etc/nginx/custom-sites -name 'vvv-auto-*.conf' -exec rm {} \;
 
@@ -548,21 +549,22 @@ custom_vvv(){
 
   # Parse any vvv-hosts file located in www/ or subdirectories of www/ for domains to be added to the virtual machine's host file so that it is self aware.
   # Domains should be entered on new lines.
-#  echo "Cleaning the virtual machine's /etc/hosts file..."
-  sed -n '/# vvv-auto$/!p' /etc/hosts > /tmp/hosts
-  mv /tmp/hosts /etc/hosts
-  echo "Adding domains to the virtual machine's /etc/hosts file..."
-  find /srv/www/ -maxdepth 5 -name 'vvv-hosts' | \
-  while read hostfile; do
-    while IFS='' read -r line || [ -n "$line" ]; do
-      if [[ "#" != ${line:0:1} ]]; then
-        if [[ -z "$(grep -q "^127.0.0.1 $line$" /etc/hosts)" ]]; then
-          echo "127.0.0.1 $line # vvv-auto" >> "/etc/hosts"
-          echo " * Added $line from $hostfile"
-        fi
-      fi
-    done < "$hostfile"
-  done
+  # Cleaning the virtual machine's /etc/hosts file...
+#  sed -n '/# vvv-auto$/!p' /etc/hosts > /tmp/hosts
+#  mv /tmp/hosts /etc/hosts
+#  echo "Adding domains to the virtual machine's /etc/hosts file..."
+#  find /srv/www/ -maxdepth 5 -name 'vvv-hosts' | \
+#  while read hostfile; do
+#    while IFS='' read -r line || [ -n "$line" ]; do
+#      if [[ "#" != ${line:0:1} ]]; then
+#        if [[ -z "$(grep -q "^127.0.0.1 $line$" /etc/hosts)" ]]; then
+#          echo "127.0.0.1 $line # vvv-auto" >> "/etc/hosts"
+#          echo " * Added $line from $hostfile"
+#        fi
+#      fi
+#    done < "$hostfile"
+#  done
+
 }
 
 ### SCRIPT

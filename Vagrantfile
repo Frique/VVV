@@ -81,15 +81,15 @@ Vagrant.configure("2") do |config|
     end
 
 	# Add additional hosts
-	setup["addition_hosts"].each do |host|
+	setup["additional_hosts"].each do |host|
       hosts.push host
     end
 
 	# Strip duplicates
 	hosts.flatten.uniq
-	puts "All found hosts: #{hosts}"
 
     # Pass the found host names to the hostsupdater plugin so it can perform magic.
+	puts "Adding following hosts to the local hostfile: #{hosts}"
     config.hostsupdater.aliases = hosts
     config.hostsupdater.remove_on_suspend = true
   end

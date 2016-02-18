@@ -11,20 +11,21 @@ A fork of https://github.com/Varying-Vagrant-Vagrants/VVV for personal use.
 - Keep repo up to date with VVV
 
 ## Applied features
-- Load box & project setup from single setup.yaml file
-- Overwrite default setup with setup-custom.yaml
+- Load box & project setup from single setup.yaml file (and overwrite default config with setup-custom.yaml)
 - Removed WordPress installs, updates, databases & hosts (start with only vvv.dev for the dashboard)
-- Stripped vagrant version pre-1.3 code
-- Enabled SSL certificate for all .dev domains
 - Automatically create & import databases for .sql dumps that don't exist during vagrant up & provision
+- Enabled SSL certificate for all .dev domains
+- Stripped vagrant version pre-1.3 code
 - Removed installation of subversion (svn), vim, colordiff
-- Added ./www/vvv-nginx.conf-sample
+- Added ./www/vvv-nginx.conf-sample //todo replace with auto setup
+- Moved vvv-hosts config to "additional_hosts" array in setup.yaml
 
 ## Todo
 - Apply project setup to nginx server setup
 - Drop & reimport a database if it already exists (adds the ability to overwrite with newer version)
 - Add empty database .sql sample for new projects
 - Reenable some of the update checks during provisioning when vital tasks are moved to vagrant up
+- Remove existing symlinks before adding them
 - Avoid checking if the ubuntu box is up to date
 - No Xdebug?
 - PHP7

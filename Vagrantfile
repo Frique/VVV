@@ -69,27 +69,25 @@ Vagrant.configure("2") do |config|
 
   # Local Machine Hosts
   #
-  # If the Vagrant plugin hostsupdater (https://github.com/cogitatio/vagrant-hostsupdater) is
-  # installed, the following will automatically configure your local machine's hosts file to
-  # be aware of the domains specified below. Watch the provisioning script as you may need to
-  # enter a password for Vagrant to access your hosts file.
-  #
-  # By default, we'll include the domains set up by VVV through the vvv-hosts file
-  # located in the www/ directory.
-  #
-  # Other domains can be automatically added by including a vvv-hosts file containing
-  # individual domains separated by whitespace in subdirectories of www/.
+  # If the Vagrant plugin hostsupdater (https://github.com/cogitatio/vagrant-hostsupdater) is installed, the following will automatically configure your local machine's hosts file to be aware of the domains specified below.
+  # Watch the provisioning script as you may need to enter a password for Vagrant to access your hosts file.
+  # Hosts are taken from the setup(-custom).yaml file's addition_hosts and projects[]['host'] config.
   if defined?(VagrantPlugins::HostsUpdater)
-    # Recursively fetch the paths to all vvv-hosts files under the www/ directory.
-    paths = Dir[File.join(vagrant_dir, 'www', '**', 'vvv-hosts')]
+	hosts = []
 
-    # Parse the found vvv-hosts files for host names.
-    hosts = paths.map do |path|
-      # Read line from file and remove line breaks
-      lines = File.readlines(path).map(&:chomp)
-      # Filter out comments starting with "#"
-      lines.grep(/\A[^#]/)
-    end.flatten.uniq # Remove duplicate entries
+	# Add project hosts to the hosts array
+    setup["projects"].each do |project|
+      hosts.push project["host"]
+    end
+
+	# Add additional hosts
+	setup["addition_hosts"].each do |host|
+      hosts.push host
+    end
+
+	# Strip duplicates
+	hosts.flatten.uniq
+	puts "All found hosts: #{hosts}"
 
     # Pass the found host names to the hostsupdater plugin so it can perform magic.
     config.hostsupdater.aliases = hosts

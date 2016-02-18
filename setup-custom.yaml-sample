@@ -2,13 +2,9 @@
 box: "ubuntu/trusty64"
 memory: "2048"
 projects:
-
-    # A custom project
--   localpath: "~/project"
+-   host: project.dev
+    localpath: "~/project"
     guestpath: "/srv/www/project.dev"
-    domains: project.dev
-    
-    # Another project
--   localpath: "~/project2"
+-   host: project2.dev
+    localpath: "~/project2"
     guestpath: "/srv/www/project2.dev"
-    domains: project2.dev

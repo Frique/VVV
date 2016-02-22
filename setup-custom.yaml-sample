@@ -3,7 +3,7 @@ box: "ubuntu/trusty32"
 memory: "2048"
 projects:
 -   host: project.dev
-    localpath: "~/project" #optional
+    localpath: "~/project" # Optional. Leave empty if the project is already available on the guest machine.
     guestpath: "/srv/www/project.dev"
 -   host: project2.dev
     localpath: "~/project2"

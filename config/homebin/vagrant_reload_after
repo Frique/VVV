@@ -1,0 +1,4 @@
+#!/bin/bash
+
+# Import new database dumps
+db_import

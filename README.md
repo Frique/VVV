@@ -22,8 +22,10 @@ A fork of https://github.com/Varying-Vagrant-Vagrants/VVV for personal use.
 
 ## Todo
 - Apply project setup to nginx server setup
-- Drop & reimport a database if it already exists (adds the ability to overwrite with newer version)
-- Add empty database .sql sample for new projects
+- Provision: Drop & reimport all databases
+- Up: Import only new databases
+	- Reload: Don't backup databases
+- Halt: Backup databases
 - Reenable some of the update checks during provisioning when vital tasks are moved to vagrant up
 - Remove existing symlinks before adding them
 - Generate a project's guest path if it's not set (makes setup.yaml's project "guestpath" param optional)

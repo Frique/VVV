@@ -33,7 +33,7 @@ then
 	# Create DB if it doesn't exist yet
 	if [ "$?" != "0" ]
 	then
-		printf "  * Found backup for DB that doesn't exist yet. Creating $pre_dot...\n\n"
+		printf " * Found backup for DB that doesn't exist yet. Creating $pre_dot...\n\n"
 		mysql -u root -proot -e "CREATE DATABASE IF NOT EXISTS $pre_dot"
 		mysql -u root -proot -e "GRANT ALL PRIVILEGES ON $pre_dot.* TO admin@localhost IDENTIFIED BY 'admin'"
 	fi
@@ -42,9 +42,9 @@ then
 	if [ "" == "$db_exist" ]
 	then
 		mysql -u root -proot $pre_dot < $pre_dot.sql
-		printf "  * Import of $pre_dot successful\n"
+		printf " * Import of $pre_dot successful\n"
 	else
-		printf "  * Skipped import of $pre_dot - tables exist\n"
+		printf " * Skipped import of $pre_dot - table exists\n"
 	fi
 
 	done

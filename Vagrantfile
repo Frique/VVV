@@ -18,7 +18,7 @@ Vagrant.configure("2") do |config|
   end
 
   # A little feedback on the loaded setup data
-  puts "Setup file loaded. Setting up a #{setup['box']} box using #{setup['cpus']} CPUs and #{setup['memory'].to_i / 1024}GB RAM."
+  # puts "Setup file loaded. Setting up a #{setup['box']} box using #{setup['cpus']} CPUs and #{setup['memory'].to_i / 1024}GB RAM."
 
   # Store the current version of Vagrant for use in conditionals when dealing with possible backward compatible issues.
   vagrant_version = Vagrant::VERSION.sub(/^v/, '')
@@ -292,10 +292,10 @@ Vagrant.configure("2") do |config|
       run "vagrant ssh -c 'vagrant_up'"
     end
     config.trigger.before :reload, :stdout => true do
-      run "vagrant ssh -c 'vagrant_halt'"
+      run "vagrant ssh -c 'vagrant_reload_before'"
     end
     config.trigger.after :reload, :stdout => true do
-      run "vagrant ssh -c 'vagrant_up'"
+      run "vagrant ssh -c 'vagrant_reload_after'"
     end
     config.trigger.before :halt, :stdout => true do
       run "vagrant ssh -c 'vagrant_halt'"

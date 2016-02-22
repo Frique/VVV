@@ -17,7 +17,6 @@ then
 		db_exist=`mysql -u root -proot --skip-column-names -e "$mysql_cmd"`
 
 		# If the table doesn't exist yet...
-		printf "db_exists: $db_exist";
 		if [ "$db_exist" == "" ]
 		then
 

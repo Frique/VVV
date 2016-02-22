@@ -20,6 +20,11 @@ Vagrant.configure("2") do |config|
   # A little feedback on the loaded setup data
   # puts "Setup file loaded. Setting up a #{setup['box']} box using #{setup['cpus']} CPUs and #{setup['memory'].to_i / 1024}GB RAM."
 
+  # Skip box update check to speed up boot time
+  if setup['skip_box_update']
+	config.vm.box_check_update = false
+  end
+
   # Store the current version of Vagrant for use in conditionals when dealing with possible backward compatible issues.
   vagrant_version = Vagrant::VERSION.sub(/^v/, '')
 

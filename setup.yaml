@@ -3,6 +3,7 @@ box: "ubuntu/trusty64"
 ip: "192.168.50.4"
 memory: "4096"
 cpus: "1"
+skip_box_update: true
 additional_hosts:
 -   vvv.dev
 projects: {}

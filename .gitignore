@@ -32,7 +32,7 @@
 /database/data/*
 
 # Log files should be ignored.
-/log/*.log
+/log/**/*.log
 
 # No need to share our individual sites with each other
 /www/*
@@ -58,3 +58,6 @@
 
 # Sample files
 !/www/*-sample
+
+# Files removed in VVV-Lite
+CHANGELOG.md

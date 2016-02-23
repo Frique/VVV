@@ -61,3 +61,5 @@
 
 # Files removed in VVV-Lite
 CHANGELOG.md
+/database/import-sql.sh
+/www/vvv-hosts

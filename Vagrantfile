@@ -18,7 +18,7 @@ Vagrant.configure("2") do |config|
   end
 
   # A little feedback on the loaded setup data
-  config.vm.post_up_message = "Box configured according to the (custom) setup files: #{setup['box']} using #{setup['cpus']} CPUs and #{setup['memory'].to_i / 1024}GB RAM."
+  config.vm.post_up_message = "VVV-Lite box configured according to the (custom) setup files: #{setup['box']} using #{setup['cpus']} CPUs and #{setup['memory'].to_i / 1024}GB RAM."
 
   # Skip box update check to speed up boot time
   if setup['skip_box_update']
@@ -27,6 +27,9 @@ Vagrant.configure("2") do |config|
 
   # Store the current version of Vagrant for use in conditionals when dealing with possible backward compatible issues.
   vagrant_version = Vagrant::VERSION.sub(/^v/, '')
+
+  # Store the current vagrant command (up/halt/reload/provision)
+  command = ARGV[0]
 
   # Configurations from 1.0.x can be placed in Vagrant 1.1.x specs like the following.
   config.vm.provider :virtualbox do |v|
@@ -224,11 +227,11 @@ Vagrant.configure("2") do |config|
     end
   end
 
-  # Project symlinks
+  # Synced project folders
   #
-  # Reads a project array from the setup file (setup-custom.yaml) and creates the required symlinks for each
+  # Reads the project array from the setup file (setup-custom.yaml) and creates the required synced folders for each
   setup["projects"].each do |project|
-	if project["localpath"]
+	if project["localpath"] then
 	  config.vm.synced_folder project["localpath"], project["guestpath"], :owner => "www-data"
 	end
   end

@@ -20,22 +20,18 @@ A fork of https://github.com/Varying-Vagrant-Vagrants/VVV for personal use.
 - Added ./www/vvv-nginx.conf-sample //todo replace with auto setup
 - Moved vvv-hosts config to "additional_hosts" array in setup.yaml
 - Skip checking if the ubuntu box is up to date to speed up boot time
+- Only import new databases on vagrant up, also overwrite existing on provision
 
 ## Todo
 - Apply project setup to nginx server setup
-- Provision: Drop & reimport all databases
-- Up: Import only new databases
-	- Reload: Don't backup databases
-- Halt: Backup databases
 - Reenable some of the update checks during provisioning when vital tasks are moved to vagrant up
 - Remove existing symlinks before adding them
 - Generate a project's guest path if it's not set (makes setup.yaml's project "guestpath" param optional)
 - No Xdebug?
 - PHP7
-- Skip apt-get update?
 - Make provision.sh:tools_install() lighter
-- Write a script to generate a new WP install with customizable defaults
-- Optionally add a WP admin user to new database imports
+- Add a script to generate a new WP install with customizable defaults (trigger from setup.yaml?)
+- Optionally add a WP admin user to new database imports (trigger from setup.yaml?)
 
 ## How to add a project
 1. Put your existing .sql in **./database/backups** or copy & rename ./database/new.sql-sample to start with an empty database

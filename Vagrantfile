@@ -18,7 +18,7 @@ Vagrant.configure("2") do |config|
   end
 
   # A little feedback on the loaded setup data
-  # puts "Setup file loaded. Setting up a #{setup['box']} box using #{setup['cpus']} CPUs and #{setup['memory'].to_i / 1024}GB RAM."
+  config.vm.post_up_message = "Box configured according to the (custom) setup files: #{setup['box']} using #{setup['cpus']} CPUs and #{setup['memory'].to_i / 1024}GB RAM."
 
   # Skip box update check to speed up boot time
   if setup['skip_box_update']

@@ -1,4 +1,10 @@
 #!/bin/bash
+# This script is run after rebooting whenever `vagrant reload` is used to reload the virtual machine. To customize this behavior, include a file in your local VVV/config/homebin directory: vagrant_reload_after_custom
 
-# Import new database dumps
-db_import
+# Look for a custom trigger file. If this exists, we'll assume that all trigger actions should be handled by this custom script. If it does not exist, then we'll handle some basic tasks.
+if [[ -f /home/vagrant/bin/vagrant_reload_after_custom ]]; then
+	vagrant_reload_after_custom
+else
+	# Import new database dumps
+	db_import
+fi

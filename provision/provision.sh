@@ -270,18 +270,18 @@ nginx_setup() {
 
   # Create an SSL key and certificate for HTTPS support.
   if [[ ! -e /etc/nginx/server.key ]]; then
-	  echo "Generate Nginx server private key..."
+	  echo "Generating Nginx server private key..."
 	  vvvgenrsa="$(openssl genrsa -out /etc/nginx/server.key 2048 2>&1)"
-	  echo "$vvvgenrsa"
+#	  echo "$vvvgenrsa"
   fi
   if [[ ! -e /etc/nginx/server.crt ]]; then
-	  echo "Sign the certificate using the above private key..."
+	  echo "Signing the certificate using the above private key..."
 	  vvvsigncert="$(openssl req -new -x509 \
             -key /etc/nginx/server.key \
             -out /etc/nginx/server.crt \
             -days 3650 \
             -subj /CN=*.*.dev 2>&1)"
-	  echo "$vvvsigncert"
+#	  echo "$vvvsigncert"
   fi
 
   echo -e "\nSetup configuration files..."
@@ -398,7 +398,7 @@ services_restart() {
   # RESTART SERVICES
   #
   # Make sure the services we expect to be running are running.
-  echo -e "\nRestart services..."
+  echo -e "\nRestarting services..."
   service nginx restart
   service memcached restart
   service mailcatcher restart

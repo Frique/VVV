@@ -229,6 +229,11 @@ Vagrant.configure("2") do |config|
 
   # Synced project folders
   #
+  # First add specified synced folders from the additional_synced_folders option in the setup file
+  setup["additional_synced_folders"].each do |paths|
+	config.vm.synced_folder paths["localpath"], paths["guestpath"], :owner => "www-data"
+  end
+  #
   # Reads the project array from the setup file (setup-custom.yaml) and creates the required synced folders for each
   setup["projects"].each do |project|
 	if project["localpath"] then

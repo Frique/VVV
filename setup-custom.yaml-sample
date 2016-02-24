@@ -1,10 +1,11 @@
 ---
-box: "ubuntu/trusty32"
-memory: "2048"
-projects:
--   host: project.dev
-    localpath: "~/project" # Optional. Leave empty if the project is already available on the guest machine.
-    guestpath: "/srv/www/project.dev"
+box: "ubuntu/trusty32"                # Overwrite simple key:value pairs like this
+projects:                             # This is an array of projects
+    # Project 1
+-   host: project.dev                 # Multiple hosts separated by spaces allowed. Also wildcards.
+    localpath: "~/project"            # Optional. Leave empty if the project is already available on the guest machine.
+    guestpath: "/srv/www/project.dev" # A synced folder will be created between the localpath and guestpath.
+    # Project 2
 -   host: project2.dev
     localpath: "~/project2"
     guestpath: "/srv/www/project2.dev"

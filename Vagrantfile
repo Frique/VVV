@@ -284,6 +284,26 @@ Vagrant.configure("2") do |config|
     config.vm.provision :shell, :path => File.join( "provision", "provision-post.sh" )
   end
 
+  # Generate VVV-Lite project vhost configs derived from setup(-custom).yaml
+  project_vhosts = ''
+  setup["projects"].each do |project|
+    if project["guestpath"] then
+      project_vhosts << "server{\n"
+      project_vhosts << "\tlisten\t\t80;\n"
+      project_vhosts << "\tlisten\t\t443 ssl;\n"
+      project_vhosts << "\tserver_name\t" + project["host"] + ";\n"
+	  project_vhosts << "\troot\t\t" + project["guestpath"] + ";\n"
+	  project_vhosts << "\tinclude\t\t/etc/nginx/nginx-wp-common.conf;\n"
+	  project_vhosts << "}\n"
+    end
+  end
+  if project_vhosts then
+    file = '/etc/nginx/custom-sites/vvv-auto-vvv-lite-projects-$(md5sum <<< "vvv-lite-projects" | cut -c1-32).conf'
+	script = 'echo "Generating project vhost configs derived from setup(-custom).yaml" & '
+    script << 'touch ' + file + ' & echo "' + project_vhosts + '" >> ' + file
+    config.vm.provision "shell", inline: script
+  end
+
   # Always start MySQL on boot, even when not running the full provisioner
   # (run: "always" support added in 1.6.0)
   if vagrant_version >= "1.6.0"

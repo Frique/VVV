@@ -11,19 +11,17 @@ A fork of https://github.com/Varying-Vagrant-Vagrants/VVV for personal use.
 - Keep repo up to date with VVV
 
 ## Applied features
-- Load box & project setup from single setup.yaml file (and overwrite default config with setup-custom.yaml)
+- Load box & project config from single setup.yaml file (and overwrite defaults with setup-custom.yaml). Hosts, synched folders and virtual hosts are automatically generated using these settings.
 - Removed WordPress installs, updates, databases & hosts (start with only vvv.dev for the dashboard)
 - Automatically create & import databases for .sql dumps that don't exist during vagrant up & provision
+- Only import new databases on vagrant up, also overwrite existing on provision
 - Enabled SSL certificate for all .dev domains
 - Stripped vagrant version pre-1.3 code
 - Removed installation of subversion (svn), vim, colordiff
-- Added ./www/vvv-nginx.conf-sample //todo replace with auto setup
 - Moved vvv-hosts config to "additional_hosts" array in setup.yaml
 - Skip checking if the ubuntu box is up to date to speed up boot time
-- Only import new databases on vagrant up, also overwrite existing on provision
 
 ## Todo
-- Apply project setup to nginx server setup
 - Reenable some of the update checks during provisioning when vital tasks are moved to vagrant up
 - Remove existing symlinks before adding them?
 - Generate a project's guest path if it's not set (makes setup.yaml's project "guestpath" param optional)

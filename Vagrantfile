@@ -292,7 +292,7 @@ Vagrant.configure("2") do |config|
       project_vhosts << "\tlisten\t\t80;\n"
       project_vhosts << "\tlisten\t\t443 ssl;\n"
       project_vhosts << "\tserver_name\t" + project["host"] + ";\n"
-	  project_vhosts << "\troot\t\t" + project["guestpath"] + ";\n"
+	  project_vhosts << "\troot\t\t'" + project["guestpath"] + "';\n"
 	  project_vhosts << "\tinclude\t\t/etc/nginx/nginx-wp-common.conf;\n"
 	  project_vhosts << "}\n"
     end

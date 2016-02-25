@@ -34,9 +34,8 @@ A fork of https://github.com/Varying-Vagrant-Vagrants/VVV for personal use.
 ## How to add a project
 1. Put your existing .sql in **./database/backups** or copy & rename ./database/new.sql-sample to start with an empty database
 2. Rename ./setup-custom.yaml-sample to **./setup-custom.yaml** and add your project details
-3. Rename ./www/vvv-nginx.conf-sample to **./www/vvv-nginx.conf** and add your project's vhost config (still to be automated)
-4. Add the domain to your **local hosts file**, pointing to 192.168.50.4
-5. Run vagrant provision / vagrant reload --provision
+3. Add the domain to your **local hosts file**, pointing to 192.168.50.4
+4. Run vagrant provision / vagrant reload --provision
 
 ## Other references
 - vagrant up

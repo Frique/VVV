@@ -1,11 +1,13 @@
 ---
-box: "ubuntu/trusty32"                # Overwrite simple key:value pairs like this
-projects:                             # This is an array of projects
+box: "ubuntu/trusty32"             # Overwrite simple key:value pairs like this
+additional_synced_folders:         # The additional_synced_folders array consists of localpath/guespath combinations
+-   localpath: "~/projects"
+    guestpath: "/srv/www/projects"
+projects:                          # This is an array of projects
     # Project 1
--   host: project.dev                 # Multiple hosts separated by spaces allowed. Also wildcards.
-    localpath: "~/project"            # Optional. Leave empty if the project is already available on the guest machine.
-    guestpath: "/srv/www/project.dev" # A synced folder will be created between the localpath and guestpath.
+-   host: project.dev              # Multiple hosts separated by spaces allowed. Also wildcards.
+    localpath: "~/project"         # Optional. Leave empty if the project is already available on the guest machine.
+    guestpath: "/srv/www/project"  # A synced folder will be created between the localpath and guestpath.
     # Project 2
--   host: project2.dev
-    localpath: "~/project2"
-    guestpath: "/srv/www/project2.dev"
+-   host: project2.dev             # The "projects" folder is already symlinked above, so only the guestpath is needed here.
+    guestpath: "/srv/www/projects/project2"

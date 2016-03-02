@@ -6,7 +6,7 @@ sql_count=`ls -1 *.sql 2>/dev/null | wc -l`
 
 if [ $sql_count != 0 ]
 then
-	printf "Importing new database backups. Run provision to also overwrite the existing.\n"
+	printf "Importing database backups and overwriting databases if they already exist.\n"
 
 	for file in $( ls *.sql )
 	do

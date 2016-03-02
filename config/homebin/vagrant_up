@@ -5,6 +5,6 @@
 if [[ -f /home/vagrant/bin/vagrant_up_custom ]]; then
 	vagrant_up_custom
 else
-	# Import databases & overwrite existing
-	db_import_overwrite
+	# Import new databases
+	db_import
 fi

@@ -14,10 +14,10 @@ then
 	do
 		pre_dot=${file%%.sql}
 		mysql_cmd='SHOW TABLES FROM `'$pre_dot'`' # Required to support hypens in database names
-		db_exist=`mysql -u root -proot --skip-column-names -e "$mysql_cmd"`
+		db_exists=`mysql -u root -proot --skip-column-names -e "$mysql_cmd"`
 
 		# If the table doesn't exist yet...
-		if [ "$db_exist" == "" ]
+		if [ "$db_exists" == "" ]
 		then
 
 			# Create DB

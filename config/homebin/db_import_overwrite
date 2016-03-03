@@ -11,8 +11,6 @@ then
 	for file in $( ls *.sql )
 	do
 		pre_dot=${file%%.sql}
-		mysql_cmd='SHOW TABLES FROM `'$pre_dot'`' # Required to support hypens in database names
-		db_exist=`mysql -u root -proot --skip-column-names -e "$mysql_cmd"`
 
 		# Delete DB
 		mysql -u root -proot -e "DROP DATABASE IF EXISTS $pre_dot"

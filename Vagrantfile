@@ -299,10 +299,9 @@ Vagrant.configure("2") do |config|
   end
   if project_vhosts then
     file = '/etc/nginx/custom-sites/vvv-auto-vvv-lite-projects-$(md5sum <<< "vvv-lite-projects" | cut -c1-32).conf'
-	script = 'echo "Generating project vhost configs derived from setup(-custom).yaml" & '
-    script << 'rm ' + file + ' & '
-    script << 'touch ' + file + ' & echo "' + project_vhosts + '" >> ' + file
-    config.vm.provision "shell", inline: script, run: "always"
+	config.vm.provision "shell", inline: 'echo "Generating project vhost configs derived from setup(-custom).yaml"', run: "always"
+	config.vm.provision "shell", inline: "rm " + file, run: "always"
+    config.vm.provision "shell", inline: 'touch ' + file + ' & echo "' + project_vhosts + '" >> ' + file, run: "always"
   end
 
   # Always start MySQL on boot, even when not running the full provisioner

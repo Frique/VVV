@@ -300,7 +300,7 @@ Vagrant.configure("2") do |config|
   if project_vhosts then
     file = '/etc/nginx/custom-sites/vvv-auto-vvv-lite-projects-$(md5sum <<< "vvv-lite-projects" | cut -c1-32).conf'
 	config.vm.provision "shell", inline: 'echo "Generating project vhost configs derived from setup(-custom).yaml"', run: "always"
-	config.vm.provision "shell", inline: "rm " + file, run: "always"
+	config.vm.provision "shell", inline: "rm -f " + file, run: "always"
     config.vm.provision "shell", inline: 'touch ' + file + ' & echo "' + project_vhosts + '" >> ' + file, run: "always"
   end
 

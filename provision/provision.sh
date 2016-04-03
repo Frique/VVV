@@ -196,7 +196,7 @@ tools_install() {
   #
   # Make sure we have the latest npm version and the update checker module
   npm install -g npm
-#  npm install -g npm-check-updates
+  npm install -g npm-check-updates
 
   # xdebug
   #
@@ -227,18 +227,17 @@ tools_install() {
     echo "Your personal GitHub token is set for Composer."
   fi
 
-  # Update both Composer and any global packages. Updates to Composer are direct from
-  # the master branch on its GitHub repository.
-#  if [[ -n "$(composer --version --no-ansi | grep 'Composer version')" ]]; then
-#    echo "Updating Composer..."
-#    COMPOSER_HOME=/usr/local/src/composer composer self-update
-#    COMPOSER_HOME=/usr/local/src/composer composer -q global require --no-update phpunit/phpunit:4.8.*
-#    COMPOSER_HOME=/usr/local/src/composer composer -q global require --no-update phpunit/php-invoker:1.1.*
-#    COMPOSER_HOME=/usr/local/src/composer composer -q global require --no-update mockery/mockery:0.9.*
-#    COMPOSER_HOME=/usr/local/src/composer composer -q global require --no-update d11wtq/boris:v1.0.8
-#    COMPOSER_HOME=/usr/local/src/composer composer -q global config bin-dir /usr/local/bin
-#    COMPOSER_HOME=/usr/local/src/composer composer global update
-#  fi
+  # Update both Composer and any global packages. Updates to Composer are direct from the master branch on its GitHub repository.
+  if [[ -n "$(composer --version --no-ansi | grep 'Composer version')" ]]; then
+    echo "Updating Composer..."
+    COMPOSER_HOME=/usr/local/src/composer composer self-update
+    COMPOSER_HOME=/usr/local/src/composer composer -q global require --no-update phpunit/phpunit:4.8.*
+    COMPOSER_HOME=/usr/local/src/composer composer -q global require --no-update phpunit/php-invoker:1.1.*
+    COMPOSER_HOME=/usr/local/src/composer composer -q global require --no-update mockery/mockery:0.9.*
+    COMPOSER_HOME=/usr/local/src/composer composer -q global require --no-update d11wtq/boris:v1.0.8
+    COMPOSER_HOME=/usr/local/src/composer composer -q global config bin-dir /usr/local/bin
+    COMPOSER_HOME=/usr/local/src/composer composer global update
+  fi
 
   # Grunt
   #
@@ -425,11 +424,11 @@ wp_cli() {
     git clone "https://github.com/wp-cli/wp-cli.git" "/srv/www/wp-cli"
     cd /srv/www/wp-cli
     composer install
-#  else
-#    echo -e "\nUpdating wp-cli..."
-#    cd /srv/www/wp-cli
-#    git pull --rebase origin master
-#    composer update
+  else
+    echo -e "\nUpdating wp-cli..."
+    cd /srv/www/wp-cli
+    git pull --rebase origin master
+    composer update
   fi
   # Link `wp` to the `/usr/local/bin` directory
   ln -sf "/srv/www/wp-cli/bin/wp" "/usr/local/bin/wp"

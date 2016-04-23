@@ -394,69 +394,73 @@ mailcatcher_setup() {
 }
 
 services_restart() {
-  # RESTART SERVICES
-  #
-  # Make sure the services we expect to be running are running.
-  echo -e "\nRestarting services..."
-  service nginx restart
-  service memcached restart
-  service mailcatcher restart
+	# RESTART SERVICES
+	# Make sure the services we expect to be running are running.
+	echo -e "\nRestarting services..."
+	service nginx restart
+	service memcached restart
+	service mailcatcher restart
 
-  # Disable PHP Xdebug module by default
-  php5dismod xdebug
+	# Disable PHP Xdebug module by default
+	php5dismod xdebug
 
-  # Enable PHP mcrypt module by default
-  php5enmod mcrypt
+	# Enable PHP mcrypt module by default
+	php5enmod mcrypt
 
-  # Enable PHP mailcatcher sendmail settings by default
-  php5enmod mailcatcher
+	# Enable PHP mailcatcher sendmail settings by default
+	php5enmod mailcatcher
 
-  service php5-fpm restart
+	service php5-fpm restart
 
-  # Add the vagrant user to the www-data group so that it has better access to PHP and Nginx related files.
-  usermod -a -G www-data vagrant
+	# Add the vagrant user to the www-data group so that it has better access to PHP and Nginx related files.
+	usermod -a -G www-data vagrant
 }
 
 wp_cli() {
-  # WP-CLI Install
-  if [[ ! -d "/srv/www/wp-cli" ]]; then
-    echo -e "\nDownloading wp-cli, see http://wp-cli.org"
-    git clone "https://github.com/wp-cli/wp-cli.git" "/srv/www/wp-cli"
-    cd /srv/www/wp-cli
-    composer install
-  else
-    echo -e "\nUpdating wp-cli..."
-    cd /srv/www/wp-cli
-    git pull --rebase origin master
-    composer update
-  fi
-  # Link `wp` to the `/usr/local/bin` directory
-  ln -sf "/srv/www/wp-cli/bin/wp" "/usr/local/bin/wp"
+	# Install
+	if [[ ! -d "/srv/www/wp-cli" ]]; then
+		echo -e "\nDownloading wp-cli, see http://wp-cli.org"
+		git clone "https://github.com/wp-cli/wp-cli.git" "/srv/www/wp-cli"
+		cd /srv/www/wp-cli
+		composer install
+	# Update
+	else
+		echo -e "\nUpdating wp-cli..."
+		cd /srv/www/wp-cli
+		git reset --hard
+		git pull --rebase origin master
+		composer update
+	fi
+	# Link `wp` to the `/usr/local/bin` directory
+	ln -sf "/srv/www/wp-cli/bin/wp" "/usr/local/bin/wp"
 }
 
+# Download and extract phpMemcachedAdmin to provide a dashboard view and admin interface to the goings on of memcached when running
 memcached_admin() {
-  # Download and extract phpMemcachedAdmin to provide a dashboard view and admin interface to the goings on of memcached when running
-  if [[ ! -d "/srv/www/default/memcached-admin" ]]; then
-    echo -e "\nDownloading phpMemcachedAdmin, see https://github.com/wp-cloud/phpmemcacheadmin"
-    cd /srv/www/default
-    wget -q -O phpmemcachedadmin.tar.gz "https://github.com/wp-cloud/phpmemcacheadmin/archive/1.2.2.1.tar.gz"
-    tar -xf phpmemcachedadmin.tar.gz
-    mv phpmemcacheadmin* memcached-admin
-    rm phpmemcachedadmin.tar.gz
-  fi
+	if [[ ! -d "/srv/www/default/memcached-admin" ]]; then
+		echo -e "\nDownloading phpMemcachedAdmin, see https://github.com/wp-cloud/phpmemcacheadmin"
+		cd /srv/www/default
+		wget -q -O phpmemcachedadmin.tar.gz "https://github.com/wp-cloud/phpmemcacheadmin/archive/1.2.2.1.tar.gz"
+		tar -xf phpmemcachedadmin.tar.gz
+		mv phpmemcacheadmin* memcached-admin
+		rm phpmemcachedadmin.tar.gz
+	fi
 }
 
+# Checkout Opcache Status to provide a dashboard for viewing statistics about PHP's built in opcache.
 opcached_status(){
-  # Checkout Opcache Status to provide a dashboard for viewing statistics about PHP's built in opcache.
-  if [[ ! -d "/srv/www/default/opcache-status" ]]; then
-    echo -e "\nDownloading Opcache Status, see https://github.com/rlerdorf/opcache-status/"
-    cd /srv/www/default
-    git clone "https://github.com/rlerdorf/opcache-status.git" opcache-status
-#  else
-#    echo -e "\nUpdating Opcache Status"
-#    cd /srv/www/default/opcache-status
-#    git pull --rebase origin master
-  fi
+	# Install
+	if [[ ! -d "/srv/www/default/opcache-status" ]]; then
+		echo -e "\nDownloading Opcache Status, see https://github.com/rlerdorf/opcache-status/"
+		cd /srv/www/default
+		git clone "https://github.com/rlerdorf/opcache-status.git" opcache-status
+	# Update
+	else
+		echo -e "\nUpdating Opcache Status"
+		cd /srv/www/default/opcache-status
+		git reset --hard
+		git pull --rebase origin master
+	fi
 }
 
 webgrind_install() {
@@ -467,6 +471,7 @@ webgrind_install() {
 #  else
 #    echo -e "\nUpdating webgrind..."
 #    cd /srv/www/default/webgrind
+#    git reset --hard
 #    git pull --rebase origin master
   fi
 }
@@ -480,6 +485,7 @@ php_codesniff() {
 #    cd /srv/www/phpcs
 #    if [[ $(git rev-parse --abbrev-ref HEAD) == 'master' ]]; then
 #      echo -e "\nUpdating PHP_CodeSniffer (phpcs)..."
+#      git reset --hard
 #      git pull --no-edit origin master
 #    else
 #      echo -e "\nSkipped updating PHP_CodeSniffer since not on master branch"
@@ -494,6 +500,7 @@ php_codesniff() {
 #    cd /srv/www/phpcs/CodeSniffer/Standards/WordPress
 #    if [[ $(git rev-parse --abbrev-ref HEAD) == 'master' ]]; then
 #      echo -e "\nUpdating PHP_CodeSniffer WordPress Coding Standards..."
+#      git reset --hard
 #      git pull --no-edit origin master
 #    else
 #      echo -e "\nSkipped updating PHPCS WordPress Coding Standards since not on master branch"

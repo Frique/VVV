@@ -447,7 +447,7 @@ memcached_admin() {
 	fi
 }
 
-# Checkout Opcache Status to provide a dashboard for viewing statistics about PHP's built in opcache.
+# Opcache Status to provide a dashboard for viewing statistics about PHP's built in opcache.
 opcached_status(){
 	# Install
 	if [[ ! -d "/srv/www/default/opcache-status" ]]; then
@@ -463,70 +463,74 @@ opcached_status(){
 	fi
 }
 
+# Webgrind (for viewing callgrind/cachegrind files produced by xdebug profiler)
 webgrind_install() {
-  # Webgrind install (for viewing callgrind/cachegrind files produced by xdebug profiler)
-  if [[ ! -d "/srv/www/default/webgrind" ]]; then
-    echo -e "\nDownloading webgrind, see https://github.com/michaelschiller/webgrind.git"
-    git clone "https://github.com/michaelschiller/webgrind.git" "/srv/www/default/webgrind"
-#  else
-#    echo -e "\nUpdating webgrind..."
-#    cd /srv/www/default/webgrind
-#    git reset --hard
-#    git pull --rebase origin master
-  fi
+	# Install
+	if [[ ! -d "/srv/www/default/webgrind" ]]; then
+		echo -e "\nDownloading webgrind"
+		git clone "https://github.com/michaelschiller/webgrind.git" "/srv/www/default/webgrind"
+	# Update
+	else
+		echo -e "\nUpdating webgrind"
+		cd /srv/www/default/webgrind
+		git reset --hard
+		git pull --rebase origin master
+	fi
 }
 
+# PHP_CodeSniffer (for running WordPress-Coding-Standards)
 php_codesniff() {
-  # PHP_CodeSniffer (for running WordPress-Coding-Standards)
-  if [[ ! -d "/srv/www/phpcs" ]]; then
-    echo -e "\nDownloading PHP_CodeSniffer (phpcs), see https://github.com/squizlabs/PHP_CodeSniffer"
-    git clone -b master "https://github.com/squizlabs/PHP_CodeSniffer.git" "/srv/www/phpcs"
-#  else
-#    cd /srv/www/phpcs
-#    if [[ $(git rev-parse --abbrev-ref HEAD) == 'master' ]]; then
-#      echo -e "\nUpdating PHP_CodeSniffer (phpcs)..."
-#      git reset --hard
-#      git pull --no-edit origin master
-#    else
-#      echo -e "\nSkipped updating PHP_CodeSniffer since not on master branch"
-#    fi
-  fi
 
-  # Sniffs WordPress Coding Standards
-  if [[ ! -d "/srv/www/phpcs/CodeSniffer/Standards/WordPress" ]]; then
-    echo -e "\nDownloading WordPress-Coding-Standards, sniffs for PHP_CodeSniffer, see https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards"
-    git clone -b master "https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards.git" "/srv/www/phpcs/CodeSniffer/Standards/WordPress"
-#  else
-#    cd /srv/www/phpcs/CodeSniffer/Standards/WordPress
-#    if [[ $(git rev-parse --abbrev-ref HEAD) == 'master' ]]; then
-#      echo -e "\nUpdating PHP_CodeSniffer WordPress Coding Standards..."
-#      git reset --hard
-#      git pull --no-edit origin master
-#    else
-#      echo -e "\nSkipped updating PHPCS WordPress Coding Standards since not on master branch"
-#    fi
-  fi
+	if [[ ! -d "/srv/www/phpcs" ]]; then
+		echo -e "\nDownloading PHP_CodeSniffer (phpcs), see https://github.com/squizlabs/PHP_CodeSniffer"
+		git clone -b master "https://github.com/squizlabs/PHP_CodeSniffer.git" "/srv/www/phpcs"
+	else
+		cd /srv/www/phpcs
+		if [[ $(git rev-parse --abbrev-ref HEAD) == 'master' ]]; then
+			echo -e "\nUpdating PHP_CodeSniffer (phpcs)..."
+			git reset --hard
+			git pull --no-edit origin master
+		else
+			echo -e "\nSkipped updating PHP_CodeSniffer since not on master branch"
+		fi
+	fi
 
-  # Install the standards in PHPCS
-  /srv/www/phpcs/scripts/phpcs --config-set installed_paths ./CodeSniffer/Standards/WordPress/
-  /srv/www/phpcs/scripts/phpcs --config-set default_standard WordPress-Core
-  /srv/www/phpcs/scripts/phpcs -i
+	# Sniffs WordPress Coding Standards
+	if [[ ! -d "/srv/www/phpcs/CodeSniffer/Standards/WordPress" ]]; then
+		echo -e "\nDownloading WordPress-Coding-Standards for PHP_CodeSniffer"
+		git clone -b master "https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards.git" "/srv/www/phpcs/CodeSniffer/Standards/WordPress"
+	else
+		cd /srv/www/phpcs/CodeSniffer/Standards/WordPress
+		if [[ $(git rev-parse --abbrev-ref HEAD) == 'master' ]]; then
+			echo -e "\nUpdating WordPress-Coding-Standards for PHP_CodeSniffer"
+			git reset --hard
+			git pull --no-edit origin master
+		else
+			echo -e "\nSkipped updating PHPCS WordPress Coding Standards since not on master branch"
+		fi
+	fi
+
+	# Install the standards in PHPCS
+	/srv/www/phpcs/scripts/phpcs --config-set installed_paths ./CodeSniffer/Standards/WordPress/
+	/srv/www/phpcs/scripts/phpcs --config-set default_standard WordPress-Core
+	/srv/www/phpcs/scripts/phpcs -i
+
 }
 
+# phpMyAdmin
 phpmyadmin_setup() {
-  # Download phpMyAdmin
-  if [[ ! -d /srv/www/default/database-admin ]]; then
-    echo "Downloading phpMyAdmin..."
-    cd /srv/www/default
-    wget -q -O phpmyadmin.tar.gz "https://files.phpmyadmin.net/phpMyAdmin/4.4.10/phpMyAdmin-4.4.10-all-languages.tar.gz"
-    tar -xf phpmyadmin.tar.gz
-    mv phpMyAdmin-4.4.10-all-languages database-admin
-    rm phpmyadmin.tar.gz
-  fi
-  cp "/srv/config/phpmyadmin-config/config.inc.php" "/srv/www/default/database-admin/"
+	if [[ ! -d /srv/www/default/database-admin ]]; then
+		echo "Downloading phpMyAdmin"
+		cd /srv/www/default
+		wget -q -O phpmyadmin.tar.gz "https://files.phpmyadmin.net/phpMyAdmin/4.4.10/phpMyAdmin-4.4.10-all-languages.tar.gz"
+		tar -xf phpmyadmin.tar.gz
+		mv phpMyAdmin-4.4.10-all-languages database-admin
+		rm phpmyadmin.tar.gz
+	fi
+	cp "/srv/config/phpmyadmin-config/config.inc.php" "/srv/www/default/database-admin/"
 }
 
-custom_vvv(){
+custom_vvv() {
 
   # Find new sites to setup.
   # Kill previously symlinked Nginx configs.

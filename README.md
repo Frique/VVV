@@ -1,10 +1,10 @@
-A fork of https://github.com/Varying-Vagrant-Vagrants/VVV for personal use.
+A fork of https://github.com/Varying-Vagrant-Vagrants/VVV with some significant changes.
 
 ## Purpose
-- Meant to run as a single instance running unlimited projects
+- Meant to run as a single instance running multiple projects
 - Focus on hooking into existing (WP) projects in any location of the local machine
-- Speed up the "vagrant up / provision" process by stripping bloat from the provisioning and separating up/provision actions for optimal machine (re)boot workflow
-- Simplify host, symlink, nginx, database management
+- Balance out the "vagrant up / provision" processes for optimal machine (re)boot/update workflow
+- Simplify project (host, symlink, nginx, database) management
 
 ## Applied features
 - Load box & project config from single setup.yaml file (and overwrite defaults with setup-custom.yaml). Hosts, synched folders and virtual hosts are automatically generated using these settings.
@@ -17,11 +17,8 @@ A fork of https://github.com/Varying-Vagrant-Vagrants/VVV for personal use.
 - Reduced the need to run the (slow) provisioning process. Provisioning is now only needed to install/update the box software. Simply run vagrant reload to apply new projects.
 
 ## Todo
-- Reenable some of the update checks during provisioning when vital tasks are moved to vagrant up
 - Remove existing symlinks before adding them?
 - Generate a project's guest path if it's not set (makes setup.yaml's project "guestpath" param optional)
-- No Xdebug?
-- PHP7
 - Make provision.sh:tools_install() lighter
 - Add a script to generate a new WP install with customizable defaults (trigger from setup.yaml?)
 - Optionally add a WP admin user to new database imports (trigger from setup.yaml?)
@@ -29,15 +26,16 @@ A fork of https://github.com/Varying-Vagrant-Vagrants/VVV for personal use.
 
 ## How to add a project
 1. Put your existing .sql in **./database/backups** or copy & rename ./database/new.sql-sample to start with an empty database
-2. Rename ./setup-custom.yaml-sample to **./setup-custom.yaml** and add your project details
+2. Copy & rename ./setup-custom.yaml-sample to **./setup-custom.yaml** and add your project details
 3. Add the domain to your **local hosts file**, pointing to 192.168.50.4 (or use the hostsupdater plugin to do this automatically)
-4. Run vagrant up or reload
+4. Run **vagrant up** or vagrant reload
 
-## Other references
+## References
 - vagrant up
 - vagrant suspend
 - vagrant halt
 - vagrant provision
+- vagrant ssh
 - vagrant status
 - vagrant global-status
 - vagrant box update

@@ -46,7 +46,7 @@ Vagrant.configure("2") do |config|
   # Configuration options for the Parallels provider.
   config.vm.provider :parallels do |v|
     v.update_guest_tools = true
-    v.optimize_power_consumption = false
+	v.customize ["set", :id, "--longer-battery-life", "off"]
     v.memory = setup['memory']
     v.cpus = setup['cpus']
   end

@@ -377,7 +377,7 @@ mysql_setup() {
     echo "Initial MySQL prep..."
 
     # Process each mysqldump SQL file in database/backups to import an initial data set for MySQL.
-	/srv/config/homebin/db_import_overwrite
+	#/srv/config/homebin/db_import_overwrite
   else
     echo -e "\nMySQL is not installed. No databases imported."
   fi

@@ -1,3 +1,7 @@
+This project is no longer maintained!
+
+---
+
 A fork of https://github.com/Varying-Vagrant-Vagrants/VVV with some significant changes.
 
 ## Purpose
